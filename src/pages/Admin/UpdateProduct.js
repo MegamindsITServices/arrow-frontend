@@ -378,19 +378,19 @@ const UpdateProduct = () => {
                   onChange={(e) => setIsbn(e.target.value)}
                 />
               </div>
-              <div className="mb-3">
-                <label htmlFor="fname">Quantity</label>
-                <input
-                  type="number"
-                  value={quantity}
-                  // placeholder="write a quantity"
-                  className="form-control form"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
+              // <div className="mb-3">
+              //   <label htmlFor="fname">Quantity</label>
+              //   <input
+              //     type="number"
+              //     value={quantity}
+              //     // placeholder="write a quantity"
+              //     className="form-control form"
+              //     onChange={(e) => setQuantity(e.target.value)}
+              //   />
+              // </div>
 
               <div className="mb-3">
-                <label htmlFor="fname">Shipping</label>
+                <label htmlFor="fname">InStock</label>
                 <Select
                   bordered={false}
                   // placeholder="Select Shipping "
