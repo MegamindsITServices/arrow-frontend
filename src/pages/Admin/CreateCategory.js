@@ -93,7 +93,7 @@ const CreateCategory = () => {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Manage Class</h1>
+            <h1>Manage Classes</h1>
             <div className="p-3 w-50">
               <CategoryForm
                 handleSubmit={handleSubmit}
