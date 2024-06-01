@@ -6,6 +6,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { Modal } from "antd";
+import "../../styles/button.css";
 
 const CreateSubject = () => {
   const [name, setName] = useState("");
@@ -95,7 +96,7 @@ const CreateSubject = () => {
           </div>
           <div className="col-md-9">
             <h1>Manage Subjects</h1>
-            <div className="p-3 w-50">
+            <div className="p-3 w-100">
               <SubjectForm
                 handleSubmit={handleSubmit}
                 value={name}
