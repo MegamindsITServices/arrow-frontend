@@ -11,7 +11,7 @@ const { Option } = Select;
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [author, setAuthor] = useState("");
@@ -26,7 +26,7 @@ const UpdateProduct = () => {
   const [frontphoto, setFrontPhoto] = useState("");
   const [backphoto, setBackPhoto] = useState("");
   const [id, setId] = useState("");
-  const [subjects, setSubjects] = useState([]);
+  // const [subjects, setSubjects] = useState([]);
 
   //get single product
   const slug = params.slug;
@@ -42,8 +42,8 @@ const UpdateProduct = () => {
       setPrice(data?.product.price);
       setQuantity(data?.product.quantity);
       setShipping(data?.product.shipping);
-      setCategory(data.product.category._id);
-      setSubject(data.product.subject._id);
+      setCategory(data.product.category.name);
+      setSubject(data.product.subject.name);
     } catch (error) {
       console.log(error);
     }
@@ -53,40 +53,39 @@ const UpdateProduct = () => {
     //eslint-disable-next-line
   }, []);
   //get all category
-  const getAllCategory = async () => {
-    try {
-      const { data } = await axios.get("/api/v1/category/categories");
-      if (data?.success) {
-        setCategories(data?.category);
-        console.log(data?.category);
-      }
-    } catch (error) {
-      console.log(error);
-      // toast.error("Something went wrong in getting category");
-    }
-  };
+  // const getAllCategory = async () => {
+  //   try {
+  //     const { data } = await axios.get("/api/v1/category/categories");
+  //     if (data?.success) {
+  //       setCategories(data?.category);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     // toast.error("Something went wrong in getting category");
+  //   }
+  // };
   //get all subjects
-  const getAllSubjects = async () => {
-    try {
-      const { data } = await axios.get("/api/v1/subject/subjects");
-      if (data?.success) {
-        setSubjects(data.subject);
-      }
-    } catch (error) {
-      console.log(error);
-      // toast.error("Something went wrong in getting subject");
-    }
-  };
-  useEffect(() => {
-    getAllCategory();
-    getAllSubjects();
-  }, []);
+  // const getAllSubjects = async () => {
+  //   try {
+  //     const { data } = await axios.get("/api/v1/subject/subjects");
+  //     if (data?.success) {
+  //       setSubjects(data.subject);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     // toast.error("Something went wrong in getting subject");
+  //   }
+  // };
+  // useEffect(() => {
+  //   getAllCategory();
+  //   getAllSubjects();
+  // }, []);
 
   //create product function
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-       if (!subject) {
+      if (!subject) {
         toast.error("Please select a subject");
         return;
       }
@@ -113,15 +112,14 @@ const UpdateProduct = () => {
       backphoto && productData.append("backphoto", backphoto);
       productData.append("category", category);
       await getConfig();
-      const { data } = axios.put(
+      const { data } = await axios.put(
         `/api/v1/product/update-product/${id}`,
         productData
       );
 
       if (data?.success) {
-        toast.error(data?.message);
-      } else {
-        toast.success("Product Updated Successfully");
+        toast.success(data?.message);
+
         navigate("/dashboard/admin/products");
       }
     } catch (error) {
@@ -169,7 +167,27 @@ const UpdateProduct = () => {
           <div className="col-md-9">
             <h1>Update Product</h1>
             <div className="m-1 w-75">
-              <label htmlFor="fname">Category</label>
+              <div className="mb-3">
+                <label htmlFor="fname">Subject</label>
+                <input
+                  type="text"
+                  value={subject}
+                  // placeholder="write a name"
+                  className="form-control form"
+                  onChange={(e) => setSubject(e.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="fname">Category</label>
+                <input
+                  type="text"
+                  value={category}
+                  // placeholder="write a name"
+                  className="form-control form"
+                  onChange={(e) => setCategory(e.target.value)}
+                />
+              </div>
+              {/* <label htmlFor="fname">Category</label>
               <Select
                 bordered={false}
                 placeholder="Select the category"
@@ -207,7 +225,7 @@ const UpdateProduct = () => {
                       {s.name}
                     </Option>
                   ))}
-              </Select>
+              </Select> */}
               <div className="mb-3">
                 <label className="Butn col-md-12">
                   {photo ? photo.name : "Upload Photo"}
@@ -377,7 +395,7 @@ const UpdateProduct = () => {
                   className="form-control form"
                   onChange={(e) => setIsbn(e.target.value)}
                 />
-              </div>
+                {/*}  //</div>
               // <div className="mb-3">
               //   <label htmlFor="fname">Quantity</label>
               //   <input
@@ -388,37 +406,39 @@ const UpdateProduct = () => {
               //     onChange={(e) => setQuantity(e.target.value)}
               //   />
               // </div>
-
-              <div className="mb-3">
-                <label htmlFor="fname">InStock</label>
-                <Select
-                  bordered={false}
-                  // placeholder="Select Shipping "
-                  size="large"
-                  showSearch
-                  className="form-select mb-3"
-                  onChange={(value) => {
-                    setShipping(value);
-                  }}
-                  value={shipping ? "yes" : "No"}
-                >
-                  <Option value="0">No</Option>
-                  <Option value="1">Yes</Option>
-                </Select>
-              </div>
-              <div className="mb-3">
-                <button className="edit-button" onClick={handleUpdate}>
-                  UPDATE PRODUCT
-                </button>
-              </div>
-              <div className="mb-3">
-                <button className="dlt-button" onClick={handleDelete}>
-                  DELETE PRODUCT
-                </button>
+            */}
+                <div className="mb-3">
+                  <label htmlFor="fname">InStock</label>
+                  <Select
+                    bordered={false}
+                    // placeholder="Select Shipping "
+                    size="large"
+                    showSearch
+                    className="form-select mb-3"
+                    onChange={(value) => {
+                      setShipping(value);
+                    }}
+                    value={shipping ? "yes" : "No"}
+                  >
+                    <Option value="0">No</Option>
+                    <Option value="1">Yes</Option>
+                  </Select>
+                </div>
+                <div className="mb-3">
+                  <button className="edit-button" onClick={handleUpdate}>
+                    UPDATE PRODUCT
+                  </button>
+                </div>
+                <div className="mb-3">
+                  <button className="dlt-button" onClick={handleDelete}>
+                    DELETE PRODUCT
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        ,/
       </div>
     </Layout>
   );
