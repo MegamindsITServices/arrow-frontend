@@ -61,9 +61,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<About />} />
-        <Route path="/product/:slug" element={<ProductDetails />} />
+        <Route path="/product/:uid" element={<ProductDetails />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/admin-search" element={<SearchAdmin/>}/>
+        <Route path="/admin-search" element={<SearchAdmin />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/textbook-gallery" element={<TextBookGallery />} />
 
@@ -89,7 +89,7 @@ function App() {
           <Route path="admin/create-product" element={<CreateProduct />} />
           <Route path="admin/write_review" element={<WriteReview />} />
           <Route path="admin/blog_post" element={<BlogPost />} />
-          <Route path="admin/product/:slug" element={<UpdateProduct />} />
+          <Route path="admin/product/:uid" element={<UpdateProduct />} />
           <Route path="admin/user_details" element={<UserDetails />} />
           <Route path="admin/owner_details" element={<OwnerDetails />} />
           <Route path="admin/users" element={<Users />} />
