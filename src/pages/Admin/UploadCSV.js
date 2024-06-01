@@ -5,6 +5,7 @@ import "../../styles/CSV.css";
 import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import { getConfig, axiosInstance } from "../../utils/request.js";
+import toast from "react-hot-toast";
 const UploadCSV = () => {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -13,8 +14,15 @@ const UploadCSV = () => {
     setFileName(e.target.files[0].name);
   };
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async () => {
     try {
+      if (!file) {
+        return toast.error("Please select a file");
+      }
+      setLoading(true);
+
       const formData = new FormData();
       formData.append("file", file);
       await getConfig();
@@ -23,12 +31,14 @@ const UploadCSV = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      setLoading(false);
       swal("Congrats", "File Uploaded", "success");
       setFileName("");
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Error uploading file. Please try again.");
     }
+    setLoading(false);
   };
 
   return (
@@ -55,12 +65,18 @@ const UploadCSV = () => {
                   onChange={handleChange}
                 />
               </div>
-              <button onClick={handleSubmit} className="upload-button">
-                Upload File
-              </button>
+              {loading ? (
+                <button className="upload-button disabled" disabled>
+                  Uploading....
+                </button>
+              ) : (
+                <button onClick={handleSubmit} className="upload-button">
+                  Upload File
+                </button>
+              )}
               <div>
                 <a
-                 href="/excel_demo_uid2024.csv"
+                  href="/excel_demo_uid2024.csv"
                   className="download-link"
                   download
                 >
