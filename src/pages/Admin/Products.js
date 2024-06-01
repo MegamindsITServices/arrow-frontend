@@ -93,7 +93,7 @@ const Products = () => {
                   </div>
 
                   <Link
-                    to={`/dashboard/admin/product/${p.slug}`}
+                    to={`/dashboard/admin/product/${p.uid}`}
                     className="product-link"
                   >
                     <button className="Butn mb-4 ms-4"> Edit</button>
