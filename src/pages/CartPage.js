@@ -210,7 +210,7 @@ const CartPage = () => {
         amount: totalAmountInPaise,
         currency: "INR",
         name: productName,
-        description: productDescription,
+        description: productDescription.slice(0, 100),
         image: productImage,
         handler: function (response) {
           console.log("Payment success: Order Placed", response);
