@@ -61,6 +61,11 @@
   background-color: #e0731d;
   color: black;
 }
+.upload-button:disabled {
+  background-color: #da8f55;
+  color: white;
+  cursor: not-allowed;
+}
 .download-link {
   margin-top: 15px;
   display: inline-block;
