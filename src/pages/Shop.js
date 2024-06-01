@@ -379,7 +379,7 @@ const Shop = () => {
                         <div className="card-name-price">
                           <button
                             className="more-details ms-1"
-                            onClick={() => navigate(`/product/${product.slug}`)}
+                            onClick={() => navigate(`/product/${product.uid}`)}
                           >
                             More Details
                           </button>
@@ -438,7 +438,7 @@ const Shop = () => {
                   key={product._id}
                   style={{ marginBottom: "3rem" }}
                 >
-                  <Link to={`/product/${product.slug}`}>
+                  <Link to={`/product/${product.uid}`}>
                     <div className="card-8 ms-2 mb-2">
                       <div>
                         {isNewProduct(product) && (
@@ -474,7 +474,7 @@ const Shop = () => {
                             <button
                               className="more-details ms-1"
                               onClick={() =>
-                                navigate(`/product/${product.slug}`)
+                                navigate(`/product/${product.uid}`)
                               }
                             >
                               More Details
@@ -505,8 +505,7 @@ const Shop = () => {
           </div>
         </div>
         {/* Pagination */}
-
-    <div>
+        <div>
           <nav aria-label="Page navigation example">
             <ul className="pagination page">
               <li
@@ -560,7 +559,6 @@ const Shop = () => {
             </ul>
           </nav>
         </div>
-
       </div>
       <hr className="ash-line" />
     </Layout>
