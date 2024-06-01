@@ -27,14 +27,14 @@ const ProductDetails = () => {
     setIndex(selectedIndex);
   };
   useEffect(() => {
-    if (params?.slug) getProduct();
-  }, [params?.slug]);
+    if (params?.uid) getProduct();
+  }, [params?.uid]);
   const getProduct = async () => {
     try {
       setIsLoading(true);
       await getConfig();
       const { data } = await axiosInstance.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `/api/v1/product/get-product/${params.uid}`
       );
       setProduct(data?.product);
       console.log("Total product get: ", data?.product);
@@ -161,7 +161,7 @@ const ProductDetails = () => {
           </div>
           <div className="col-md-6 product-details-info">
             <h2 className="text-center p-name-details">
-              <span className="product-name"> {product.name}</span>
+              <span className="product-name"> {product?.name}</span>
             </h2>
             <hr />
             <p className="price">
@@ -219,7 +219,7 @@ const ProductDetails = () => {
                 <img
                   src={`/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top similar-card-img"
-                  onClick={() => navigate(`/product/${p.slug}`)}
+                  onClick={() => navigate(`/product/${p.uid}`)}
                   alt={p.name}
                 />
                 <div className="card-body">
