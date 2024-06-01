@@ -438,7 +438,7 @@ const UpdateProduct = () => {
             </div>
           </div>
         </div>
-        ,/
+  
       </div>
     </Layout>
   );
