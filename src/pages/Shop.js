@@ -28,7 +28,7 @@ const Shop = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [countTotal, setCountTotal] = useState(1);
-  const [limit, setLimit] = useState(2);
+  const [limit, setLimit] = useState(40);
 
   const getAllCategory = async () => {
     try {
@@ -56,16 +56,12 @@ const Shop = () => {
     getTotal();
   }, []);
 
-  useEffect(() => {
-    getAllProduct(currentPage);
-  }, [currentPage]);
-  console.log(currentPage);
-  const getAllProduct = async (pageNumber = 1, limit = 50) => {
+  const getAllProduct = async (pageNumber = 1, limit = 40) => {
     try {
       let url = "/api/v1/product/get-product";
-      if (pageNumber) {
-        url += `?pageNumber=${pageNumber}&limit=${limit}`;
-      }
+
+      url += `?pageNumber=${pageNumber}&limit=${limit}`;
+
       const { data } = await axios.get(url);
       setProducts(data.products);
       setCountTotal(data.countTotal);
@@ -153,25 +149,20 @@ const Shop = () => {
     getAllProduct();
   };
 
-  useEffect(() => {
-    getAllProduct();
-  }, [currentPage]);
-
   // const handlePageChange = (page) => {
   //   setCurrentPage(page);
   // };
-
+  let length;
   const renderPage = () => {
-    const length = Math.ceil(countTotal / limit);
+    length = Math.ceil(countTotal / limit);
     const newArray = Array.from({ length }, (_, index) => index + 1);
+
     return newArray;
   };
   const handlePageClick = (e, pageNumber) => {
     e.preventDefault(); // Prevent default behavior
     setCurrentPage(pageNumber);
   };
-
-  console.log(renderPage());
 
   const isNewProduct = (product) => {
     // Convert the creation date string to a Date object
@@ -196,6 +187,11 @@ const Shop = () => {
 
   //   setSelectRadio(e.target.value);
   // };
+
+  useEffect(() => {
+    if (currentPage < 1 || currentPage > length) return;
+    getAllProduct(currentPage);
+  }, [currentPage]);
 
   return (
     <Layout>
@@ -318,87 +314,6 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* <div className="">
-          <div className="col-md-10 product-shop">
-            {viewMode === "list" ? (
-              <div className="row row-cols-1 row-cols-md-3">
-                {products?.map((product, index) => (
-                  <div className="col mb-4" key={product._id}>
-                    <div className="card-8 ms-2 mb-2">
-                      {isNewProduct(product) && (
-                        <span
-                          className="new-badge-shop"
-                          style={{ marginTop: "9px" }}
-                        >
-                          <strong className="new">New</strong>
-                        </span>
-                      )}
-                      <img
-                        src={`/api/v1/product/product-photo/${product._id}`}
-                        className="card-img-top-product"
-                        alt={product.name}
-                        style={{ width: "170px", height: "auto" }}
-                      />
-                      <div className="card-body">
-                        <div className="card-name-price">
-                          <h5 className="card-title-product">
-                            {" "}
-                            {product.name}
-                          </h5>
-                          <h5 className="card-desc">
-                            {product.description.substring(0, 20)}...
-                          </h5>
-                          <h6 className="card-price">Price: {product.price}</h6>
-                        </div>
-
-                        <div className="card-name-price">
-                          <button
-                            className="more-details ms-1"
-                            onClick={() => navigate(`/product/${product.slug}`)}
-                          >
-                            More Details
-                          </button>
-                          <button
-                            className="add-cart-butn ms-1 mb-4"
-                            onClick={() => {
-                              addItemCart(product);
-                            }}
-                          >
-                            ADD TO CART
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="row row-cols-1 row-cols-md-5 product-shop-title">
-                {products?.map((product, index) => (
-                  <div className="col mb-4" key={product._id}>
-                    <div className="card-view-title ms-2 mb-2">
-                      <img
-                        src={`/api/v1/product/product-photo/${product._id}`}
-                        className="card-img-top-product"
-                        alt={product.name}
-                        style={{ width: "220px", height: "auto" }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="d-flex justify-content-center">
-              {products.length == 0 && (
-                <div className="">
-                  {" "}
-                  <h5 className="not-found">No record Found</h5>
-                </div>
-              )}
-            </div>
-          </div>
-        </div> */}
         <div className="">
           <div className="col-md-12 product-shop">
             <div
@@ -479,26 +394,33 @@ const Shop = () => {
             </div>
           </div>
         </div>
-        {/* 
+        {/* Pagination */}
         <div>
           <nav aria-label="Page navigation example">
             <ul className="pagination page">
               <li
-                className="page-item"
-                onClick={(e) => setCurrentPage(currentPage - 1)}
+                className={`page-item page-control ${
+                  currentPage <= 1 && "disabled"
+                }`}
+                onClick={(e) => {
+                  if (currentPage <= 1) return;
+                  setCurrentPage(currentPage - 1);
+                }}
               >
                 <a
                   className="page-link"
                   href="javascript:void(0)"
-                  disabled={currentPage == 1 ? true : false}
+                  disabled={currentPage <= 1}
                 >
                   Previous
                 </a>
               </li>
-              {renderPage().map((x) => (
+              {renderPage().map((x, i) => (
                 <li className="page-item" key={x}>
                   <a
-                    className="page-link"
+                    className={`page-link ${
+                      x === currentPage && "active-page"
+                    }`}
                     href="javascript:void(0)"
                     onClick={(e) => handlePageClick(e, x)}
                   >
@@ -506,10 +428,27 @@ const Shop = () => {
                   </a>
                 </li>
               ))}
-            
+
+              <li
+                className={`page-item page-control ${
+                  currentPage >= length && "disabled"
+                }`}
+                onClick={(e) => {
+                  if (currentPage >= length) return;
+                  setCurrentPage(currentPage + 1);
+                }}
+              >
+                <a
+                  className="page-link"
+                  href="javascript:void(0)"
+                  disabled={currentPage >= length}
+                >
+                  Next
+                </a>
+              </li>
             </ul>
           </nav>
-        </div> */}
+        </div>
       </div>
       <hr className="ash-line" />
     </Layout>
