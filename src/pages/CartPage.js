@@ -48,16 +48,24 @@ const CartPage = () => {
     cart.forEach((item) => {
       total += item.price * (quantities[item._id] || 1);
     });
-    // Check if the total has a decimal part
-    const hasDecimals = total % 1 !== 0;
-    // If there are decimals, calculate and append them
-    const decimals = hasDecimals
-      ? Math.ceil((total - Math.floor(total)) * 100)
-      : 0;
-    // Return the total with appended decimals
-    return `${Math.floor(total)}.${decimals.toLocaleString("en-IN", {
-      minimumIntegerDigits: 2,
-    })}`;
+    // // Check if the total has a decimal part
+    // const hasDecimals = total % 1 !== 0;
+    // // If there are decimals, calculate and append them
+    // const decimals = hasDecimals
+    //   ? Math.ceil((total - Math.floor(total)) * 100)
+    //   : 0;
+    // // Return the total with appended decimals
+    // return `${Math.floor(total)}.${decimals.toLocaleString("en-IN", {
+    //   minimumIntegerDigits: 2,
+    // })}`;
+    // Ensure the total has exactly two decimal places
+    const formattedTotal = total.toFixed(2);
+
+    // Split the total into integer and decimal parts
+    const [integerPart, decimalPart] = formattedTotal.split(".");
+
+    // Return the total with two decimal places
+    return `${integerPart}.${decimalPart}`;
   };
   useEffect(() => {
     const savedQuantities = JSON.parse(localStorage.getItem("cartQuantities"));
