@@ -56,7 +56,7 @@ const Shop = () => {
     getTotal();
   }, []);
 
-  const getAllProduct = async (pageNumber = 1, limit = 40) => {
+  const getAllProduct = async (pageNumber = currentPage, limit = 40) => {
     try {
       let url = "/api/v1/product/get-product";
 
@@ -154,10 +154,39 @@ const Shop = () => {
   // };
   let length;
   const renderPage = () => {
+    let pages = [];
     length = Math.ceil(countTotal / limit);
-    const newArray = Array.from({ length }, (_, index) => index + 1);
+    // length = 10;
+    if (length <= 4) {
+      for (let i = 1; i <= length; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
 
-    return newArray;
+      if (currentPage > 3) {
+        pages.push("...");
+      }
+
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(length - 1, currentPage + 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        if (i !== 1 && i !== length) {
+          pages.push(i);
+        }
+      }
+
+      if (currentPage < length - 2) {
+        pages.push("...");
+      }
+
+      if (!pages.includes(length)) {
+        pages.push(length);
+      }
+    }
+
+    return pages;
   };
   const handlePageClick = (e, pageNumber) => {
     e.preventDefault(); // Prevent default behavior
@@ -314,6 +343,87 @@ const Shop = () => {
           </div>
         </div>
 
+        {/* <div className="">
+          <div className="col-md-10 product-shop">
+            {viewMode === "list" ? (
+              <div className="row row-cols-1 row-cols-md-3">
+                {products?.map((product, index) => (
+                  <div className="col mb-4" key={product._id}>
+                    <div className="card-8 ms-2 mb-2">
+                      {isNewProduct(product) && (
+                        <span
+                          className="new-badge-shop"
+                          style={{ marginTop: "9px" }}
+                        >
+                          <strong className="new">New</strong>
+                        </span>
+                      )}
+                      <img
+                        src={`/api/v1/product/product-photo/${product._id}`}
+                        className="card-img-top-product"
+                        alt={product.name}
+                        style={{ width: "170px", height: "auto" }}
+                      />
+                      <div className="card-body">
+                        <div className="card-name-price">
+                          <h5 className="card-title-product">
+                            {" "}
+                            {product.name}
+                          </h5>
+                          <h5 className="card-desc">
+                            {product.description.substring(0, 20)}...
+                          </h5>
+                          <h6 className="card-price">Price: {product.price}</h6>
+                        </div>
+
+                        <div className="card-name-price">
+                          <button
+                            className="more-details ms-1"
+                            onClick={() => navigate(`/product/${product.slug}`)}
+                          >
+                            More Details
+                          </button>
+                          <button
+                            className="add-cart-butn ms-1 mb-4"
+                            onClick={() => {
+                              addItemCart(product);
+                            }}
+                          >
+                            ADD TO CART
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="row row-cols-1 row-cols-md-5 product-shop-title">
+                {products?.map((product, index) => (
+                  <div className="col mb-4" key={product._id}>
+                    <div className="card-view-title ms-2 mb-2">
+                      <img
+                        src={`/api/v1/product/product-photo/${product._id}`}
+                        className="card-img-top-product"
+                        alt={product.name}
+                        style={{ width: "220px", height: "auto" }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="d-flex justify-content-center">
+              {products.length == 0 && (
+                <div className="">
+                  {" "}
+                  <h5 className="not-found">No record Found</h5>
+                </div>
+              )}
+            </div>
+          </div>
+        </div> */}
         <div className="">
           <div className="col-md-12 product-shop">
             <div
@@ -399,9 +509,7 @@ const Shop = () => {
           <nav aria-label="Page navigation example">
             <ul className="pagination page">
               <li
-                className={`page-item page-control ${
-                  currentPage <= 1 && "disabled"
-                }`}
+                className={`page-item ${currentPage <= 1 && "disabled"}`}
                 onClick={(e) => {
                   if (currentPage <= 1) return;
                   setCurrentPage(currentPage - 1);
@@ -412,27 +520,29 @@ const Shop = () => {
                   href="javascript:void(0)"
                   disabled={currentPage <= 1}
                 >
-                  Previous
+                  Prev
                 </a>
               </li>
               {renderPage().map((x, i) => (
                 <li className="page-item" key={x}>
-                  <a
-                    className={`page-link ${
-                      x === currentPage && "active-page"
-                    }`}
-                    href="javascript:void(0)"
-                    onClick={(e) => handlePageClick(e, x)}
-                  >
-                    {x}
-                  </a>
+                  {x === "..." ? (
+                    <span className="page-link">...</span>
+                  ) : (
+                    <a
+                      className={`page-link ${
+                        x === currentPage && "active-page"
+                      }`}
+                      href="javascript:void(0)"
+                      onClick={(e) => handlePageClick(e, x)}
+                    >
+                      {x}
+                    </a>
+                  )}
                 </li>
               ))}
 
               <li
-                className={`page-item page-control ${
-                  currentPage >= length && "disabled"
-                }`}
+                className={`page-item ${currentPage >= length && "disabled"}`}
                 onClick={(e) => {
                   if (currentPage >= length) return;
                   setCurrentPage(currentPage + 1);
