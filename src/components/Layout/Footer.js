@@ -68,26 +68,27 @@ const Footer = () => {
                   </div>
                 </div>
               </div>
-              // <div className="col-md-2">
-              //   <div className="useful-link-shop">
-              //     <h2 className="shopby">
-              //       <Link to="/Shop">Shop by</Link>
-              //     </h2>
+{/*
+              <div className="col-md-2">
+                <div className="useful-link-shop">
+                  <h2 className="shopby">
+                    <Link to="/Shop">Shop by</Link>
+                  </h2>
 
-              //     <div className="use-links">
-              //       <li>
-              //         <Link to="/shop">
-              //           <i className="fa-solid fa-angles-right" /> Class
-              //         </Link>
-              //       </li>
-              //       <li>
-              //         <Link to="/shop">
-              //           <i className="fa-solid fa-angles-right" /> Subject
-              //         </Link>
-              //       </li>
-              //     </div>
-              //   </div>
-              // </div>
+                  <div className="use-links">
+                    <li>
+                      <Link to="/shop">
+                        <i className="fa-solid fa-angles-right" /> Class
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/shop">
+                        <i className="fa-solid fa-angles-right" /> Subject
+                      </Link>
+                    </li>
+                  </div>
+                </div>
+              </div>*/}
               <div className="col-md-3">
                 <div className="useful-link">
                   <h2 className="pay-online">Pay Online</h2>
