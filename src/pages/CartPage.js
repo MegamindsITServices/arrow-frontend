@@ -8,6 +8,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import "../styles/cart.css";
 import useRazorpay from "react-razorpay";
+import toast from "react-hot-toast";
 const CartPage = () => {
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
@@ -132,13 +133,13 @@ const CartPage = () => {
       products_name.push(item.name);
       quantityData[item._id] = quantities[item._id];
     });
-    console.log(auth.user.name);
-    console.log(auth.user.userID);
-    console.log(productIDs);
-    console.log(totalPrice);
-    console.log(products_name);
-    console.log(auth.user.address);
-    console.log(quantities);
+    // console.log(auth.user.name);
+    // console.log(auth.user.userID);
+    // console.log(productIDs);
+    // console.log(totalPrice);
+    // console.log(products_name);
+    // console.log(auth.user.address);
+    // console.log(quantities);
     const orderData = {
       products: productIDs,
       products_name: products_name,
@@ -171,6 +172,9 @@ const CartPage = () => {
     try {
       // placeOrder();
       const cartLen = cart.length;
+      if (cartLen < 1) {
+        return toast.error("Cart is empty");
+      }
       let productName = "";
       let productImage =
         "https://arrowpublicationsindia.com/wp-content/uploads/2019/12/logo-new.png";
@@ -230,12 +234,6 @@ const CartPage = () => {
       var rzp = new Razorpay(options);
       rzp.on("payment.failed", function (response) {
         alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
       });
 
       rzp.open();
@@ -247,7 +245,7 @@ const CartPage = () => {
 
   return (
     <Layout>
-      <div className="row">
+      <div className="row ">
         <div className="col-md-12">
           <h3 className="text-center auth-content p-2 mb-1">
             {!auth?.user
@@ -375,15 +373,17 @@ const CartPage = () => {
                     )}
                   </div>
                 )}
-                <div className="mt-2">
-                  <button
-                    className="Butn"
-                    onClick={() => handlePayment()}
-                    type="button"
-                  >
-                    {loading ? "Processing ...." : "Make Payment"}
-                  </button>
-                </div>
+                {cart && cart?.length > 0 && (
+                  <div className="mt-2">
+                    <button
+                      className="Butn"
+                      onClick={() => handlePayment()}
+                      type="button"
+                    >
+                      {loading ? "Processing ...." : "Make Payment"}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
