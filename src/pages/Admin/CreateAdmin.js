@@ -108,7 +108,7 @@ const CreateAdmin = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 className="form-control input-login"
                 id="exampleInputEmail1"
-                placeholder="Shipping Address"
+                placeholder="Address"
                 required
               />
             </div>
