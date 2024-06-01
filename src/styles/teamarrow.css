@@ -142,7 +142,7 @@
   height: 70em;
 }
 .card-text-team {
-  font-size: 16px;
+  font-size: 20px;
   text-align: justify;
   margin-right: 20px;
 }
@@ -213,7 +213,7 @@
     margin-bottom: 5px;
   }
   .card-text-team {
-    font-size: 10px;
+    font-size: 16px;
     text-align: justify;
     margin-right: 20px;
     line-height: 1.2; /* Set line height to 1 for no gap between lines */
