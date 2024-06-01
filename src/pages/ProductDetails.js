@@ -63,7 +63,7 @@ const ProductDetails = () => {
         const { data: image2 } = await axios.get(
           `/api/v1/product/product-frontphoto/${id}`
         );
-        if (image2) {
+        if (image2 && typeof image2 === "string") {
           image.push(`/api/v1/product/product-frontphoto/${id}`);
         }
       } catch (error) {
@@ -73,7 +73,7 @@ const ProductDetails = () => {
         const { data: image3 } = await axios.get(
           `/api/v1/product/product-backphoto/${id}`
         );
-        if (image3) {
+        if (image3 && typeof image3 === "string") {
           image.push(`/api/v1/product/product-backphoto/${id}`);
         }
       } catch (error) {
@@ -133,7 +133,7 @@ const ProductDetails = () => {
             )}
 
             {images.length > 1 ? (
-              <>
+              <div className="carousel-wrapper">
                 <Carousel
                   activeIndex={index}
                   indicators={false}
@@ -148,7 +148,7 @@ const ProductDetails = () => {
                     </Carousel.Item>
                   ))}
                 </Carousel>
-              </>
+              </div>
             ) : (
               <>
                 <img
