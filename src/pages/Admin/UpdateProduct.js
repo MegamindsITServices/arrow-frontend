@@ -29,10 +29,10 @@ const UpdateProduct = () => {
   // const [subjects, setSubjects] = useState([]);
 
   //get single product
-  const slug = params.slug;
+  const uid = params.uid;
   const getSingleProduct = async () => {
     try {
-      const { data } = await axios.get(`/api/v1/product/get-product/${slug}`);
+      const { data } = await axios.get(`/api/v1/product/get-product/${uid}`);
       setName(data?.product.name);
       setId(data?.product._id);
       setDescription(data?.product.description);
@@ -438,7 +438,7 @@ const UpdateProduct = () => {
             </div>
           </div>
         </div>
-  
+        ,/
       </div>
     </Layout>
   );
