@@ -462,3 +462,31 @@
     font-size: 12px;
   }
 }
+
+.active-page {
+  background-color: #e0731d;
+  color: white !important;
+}
+
+.page-link {
+  color: #e0731d;
+}
+
+.page-link:hover {
+  color: #e0731d !important;
+  border: 1px solid #e0731d;
+}
+
+.page-link:active {
+  color: #e0731d !important;
+  border: 1px solid #e0731d;
+}
+
+.page-link:focus {
+  color: #e0731d !important;
+  border: 1px solid #e0731d;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
