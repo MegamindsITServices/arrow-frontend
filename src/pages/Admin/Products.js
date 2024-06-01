@@ -15,13 +15,21 @@ const Products = () => {
   const navigate = useNavigate();
 
   //get all products
-  const getAllProducts = async () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [countTotal, setCountTotal] = useState(1);
+  const [limit, setLimit] = useState(40);
+
+  const getAllProducts = async (pageNumber = currentPage, limit = 40) => {
     try {
-      const { data } = await axios.get("/api/v1/product/get-product");
+      let url = "/api/v1/product/get-product";
+
+      url += `?pageNumber=${pageNumber}&limit=${limit}`;
+
+      const { data } = await axios.get(url);
       setProducts(data.products);
+      setCountTotal(data.countTotal);
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong");
     }
   };
   useEffect(() => {
@@ -58,6 +66,53 @@ const Products = () => {
       // toast.error("Something went wrong");
     }
   };
+  // Pagination
+  let length;
+  const renderPage = () => {
+    let pages = [];
+    length = Math.ceil(countTotal / limit);
+    // length = 10;
+    if (length <= 4) {
+      for (let i = 1; i <= length; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+
+      if (currentPage > 3) {
+        pages.push("...");
+      }
+
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(length - 1, currentPage + 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        if (i !== 1 && i !== length) {
+          pages.push(i);
+        }
+      }
+
+      if (currentPage < length - 2) {
+        pages.push("...");
+      }
+
+      if (!pages.includes(length)) {
+        pages.push(length);
+      }
+    }
+
+    return pages;
+  };
+
+  const handlePageClick = (e, pageNumber) => {
+    e.preventDefault(); // Prevent default behavior
+    setCurrentPage(pageNumber);
+  };
+
+  useEffect(() => {
+    if (currentPage < 1 || currentPage > length) return;
+    getAllProducts(currentPage);
+  }, [currentPage]);
 
   return (
     <Layout>
@@ -111,6 +166,61 @@ const Products = () => {
               ))}
             </div>
           </div>
+        </div>
+        {/* Pagination */}
+        <div className="pagination-wrapper">
+          <nav aria-label="Page navigation example">
+            <ul className="pagination page">
+              <li
+                className={`page-item ${currentPage <= 1 && "disabled"}`}
+                onClick={(e) => {
+                  if (currentPage <= 1) return;
+                  setCurrentPage(currentPage - 1);
+                }}
+              >
+                <a
+                  className="page-link"
+                  href="javascript:void(0)"
+                  disabled={currentPage <= 1}
+                >
+                  Prev
+                </a>
+              </li>
+              {renderPage().map((x, i) => (
+                <li className="page-item" key={x}>
+                  {x === "..." ? (
+                    <span className="page-link">...</span>
+                  ) : (
+                    <a
+                      className={`page-link ${
+                        x === currentPage && "active-page"
+                      }`}
+                      href="javascript:void(0)"
+                      onClick={(e) => handlePageClick(e, x)}
+                    >
+                      {x}
+                    </a>
+                  )}
+                </li>
+              ))}
+
+              <li
+                className={`page-item ${currentPage >= length && "disabled"}`}
+                onClick={(e) => {
+                  if (currentPage >= length) return;
+                  setCurrentPage(currentPage + 1);
+                }}
+              >
+                <a
+                  className="page-link"
+                  href="javascript:void(0)"
+                  disabled={currentPage >= length}
+                >
+                  Next
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </Layout>
