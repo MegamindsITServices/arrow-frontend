@@ -505,7 +505,9 @@ const Shop = () => {
           </div>
         </div>
         {/* Pagination */}
-        <div>
+{
+  length> 1 && (
+    <div>
           <nav aria-label="Page navigation example">
             <ul className="pagination page">
               <li
@@ -559,6 +561,8 @@ const Shop = () => {
             </ul>
           </nav>
         </div>
+  )
+}
       </div>
       <hr className="ash-line" />
     </Layout>
