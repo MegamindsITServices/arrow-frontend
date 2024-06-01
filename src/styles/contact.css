@@ -48,6 +48,14 @@
   background-size: cover; /* Ensure the background image covers the entire container */
   background-position: center; /* Center the background image horizontally and vertically */
 }
+
+.intro-excerpt h1 {
+  font-weight: 700;
+  font-size: 3rem;
+  position: absolute;
+  bottom: 0;
+  left: 4rem;
+}
 .cart {
   flex: 1; /* Each box takes an equal portion of the available space */
   margin-right: 5px; /* Decrease margin between boxes */
@@ -118,10 +126,15 @@
   max-width: 780px;
   left: -20px;
 }
+
 @media (min-width: 768px) {
   .hero .hero-img-wrap img {
     right: 0px;
     left: -100px;
+  }
+
+  .intro-excerpt h1 {
+    left: 7rem;
   }
 }
 @media (min-width: 992px) {
@@ -149,10 +162,7 @@
   display: flex;
   color: white;
 }
-.intro-excerpt h1 {
-  font-weight: 700;
-  font-size: 3rem;
-}
+
 .something {
   color: #db7f1a;
   margin-right: 10px;
