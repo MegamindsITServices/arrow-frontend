@@ -98,7 +98,7 @@ const TextBookGallery = () => {
                     src={`/api/v1/product/product-photo/${p._id}`}
                     className="card-img-homepage"
                     alt={p.name}
-                    onClick={() => navigate(`/product/${p.slug}`)}
+                    onClick={() => navigate(`/product/${p.uid}`)}
                   />
                 </div>
               ))}
