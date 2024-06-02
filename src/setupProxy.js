@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://api.bharathmegaminds.com",
+      target: "https://bharathmegaminds.com",
       changeOrigin: true,
     })
   );
