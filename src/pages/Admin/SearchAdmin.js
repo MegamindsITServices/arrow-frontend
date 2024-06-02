@@ -72,7 +72,7 @@ const SearchAdmin = () => {
                     })}
                   </h4>
                   <Link
-                   to={`/dashboard/admin/product/${p.slug}`}
+                   to={`/dashboard/admin/product/${p.uid}`}
                   //  className="product-link"
                   >
                   <button className="Butn ms-1 mb-3">Edit</button>
