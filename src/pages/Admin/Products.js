@@ -129,7 +129,7 @@ const Products = () => {
             </div>
             <div className="row">
               {products?.map((p, index) => (
-                <div key={p._id} className="col-sm-6 col-lg-3 col-xl-3 col-xxl-2">
+                <div key={p._id} className="col-sm-6 col-lg-3 col-xl-3">
                   <div className="card-6 mb-3">
                     <img
                       src={`/api/v1/product/product-photo/${p._id}`}
