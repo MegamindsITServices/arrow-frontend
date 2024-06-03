@@ -25,7 +25,7 @@ const UploadCSV = () => {
 
       const formData = new FormData();
       formData.append("file", file);
-      await axiosInstance.post("/api/v1/product/upload", formData, {
+      await axios.post("/api/v1/product/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
