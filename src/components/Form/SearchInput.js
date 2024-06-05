@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearch } from "../../context/search";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import "../../styles/Searchbar.css";
+
 const SearchInput = () => {
   const [values, setValues] = useSearch();
   const [showSearch, setShowSearch] = useState(false);
@@ -15,27 +16,45 @@ const SearchInput = () => {
     setShowSearch(!showSearch);
   };
 
-  // const handleInputChange = (e) => {
-  //   setKeyword(e.target.value);
-  // };
-  const handleInputChange = async (e) => {
-    const { value } = e.target;
-    setKeyword(value);
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (keyword.length > 0) {
+        try {
+          const { data } = await axios.get(
+            `/api/v1/product/search-suggestion/${keyword}`
+          );
+          setSuggestions(data);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setSuggestions([]);
+      }
+    };
 
-    try {
-      // Fetch suggestions from the backend
-      const { data } = await axios.get(`/api/v1/product/search/${value}`);
-      setSuggestions(data); // Update suggestions based on user input
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(suggestions.length);
+
+    const delayDebounceFn = setTimeout(() => {
+      fetchSuggestions();
+    }, 500); // Delay of 300ms
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [keyword]);
+
+  const handleInputChange = (e) => {
+    setKeyword(e.target.value);
   };
+
+  const handleSuggestionClick = (suggestion) => {
+    setKeyword(suggestion.name);
+    setSuggestions([]);
+    setValues({ ...values, keyword: suggestion.name });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get(
-        `/api/v1/product/search/${values.keyword}`
-      );
+      const { data } = await axios.get(`/api/v1/product/search/${keyword}`);
       setValues({ ...values, result: data });
       setKeyword("");
       navigate("/search");
@@ -43,6 +62,7 @@ const SearchInput = () => {
       console.log(error);
     }
   };
+
   return (
     <>
       <div className="desktop-view">
@@ -56,19 +76,20 @@ const SearchInput = () => {
             type="search"
             placeholder="Search"
             aria-label="Search"
-            value={values.keyword}
-            onChange={(e) => setValues({ ...values, keyword: e.target.value })}
+            value={keyword}
+            onChange={handleInputChange}
           />
           <button className="search-button" type="submit">
             <IoSearch />
           </button>
         </form>
         {suggestions.length > 0 && (
-          <ul>
+          <ul className="suggestions-list">
             {suggestions.map((suggestion) => (
               <li
                 key={suggestion._id}
-                onClick={() => setKeyword(suggestion.name)}
+                onClick={handleSubmit}
+                className="suggestion-item"
               >
                 {suggestion.name}
               </li>
@@ -107,6 +128,19 @@ const SearchInput = () => {
             </div>
           )}
         </form>
+        {showSearch && suggestions.length > 0 && (
+          <ul className="suggestions-list">
+            {suggestions.map((suggestion) => (
+              <li
+                key={suggestion._id}
+                onClick={handleSubmit}
+                className="suggestion-item"
+              >
+                {suggestion.name}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );
