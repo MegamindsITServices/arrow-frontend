@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/style.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Badge } from "antd";
@@ -15,12 +15,15 @@ import { BsCart4 } from "react-icons/bs";
 import "../../styles/header.css";
 import SearchInput from "../Form/SearchInput";
 import ToggleSearch from "../Form/ToggleSearch";
+import axios from "axios";
 
 // import ToggleSearch from "../Form/ToggleSearch";
 // import SearchModal from "../Form/SearchModal";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
+  const [ok, setOk] = useState(false);
+
   const navigate = useNavigate();
   const [showAboutDropdown, setShowAboutDropdown] = useState(false);
   // const [showShopDropdown, setShowShopDropdown] = useState(false);
@@ -45,6 +48,18 @@ const Header = () => {
     navigate("/cart");
     window.location.reload();
   };
+
+  useEffect(() => {
+    const authCheck = async () => {
+      const res = await axios.get("/api/v1/auth/user-auth");
+      if (res.data.ok) {
+        setOk(true);
+      } else {
+        setOk(false);
+      }
+    };
+    if (auth?.token) authCheck();
+  }, [auth?.token]);
 
   return (
     <>
@@ -71,18 +86,22 @@ const Header = () => {
             </Badge>
           </NavLink>
 
-          <NavLink to="/signup">
-            <button className="header-signup ms-4">
-              <FaRegPenToSquare className="icon" />
-              <span className="reg">Register</span>
-            </button>
-          </NavLink>
-          <NavLink to="/login">
-            <button className="header-login">
-              <IoIosLock className="icon" />
-              <span className="sign"> Login</span>
-            </button>
-          </NavLink>
+          {!ok && (
+            <>
+              <NavLink to="/signup">
+                <button className="header-signup ms-4">
+                  <FaRegPenToSquare className="icon" />
+                  <span className="reg">Register</span>
+                </button>
+              </NavLink>
+              <NavLink to="/login">
+                <button className="header-login">
+                  <IoIosLock className="icon" />
+                  <span className="sign"> Login</span>
+                </button>
+              </NavLink>
+            </>
+          )}
         </div>
       </div>
       <div className="mobile">
@@ -99,23 +118,31 @@ const Header = () => {
             <div class="search-container">
               <SearchInput />
             </div>
-            <NavLink to="/cart" onClick={() => window.location.reload()}>
-              <Badge count={cart?.length} class="ms-3">
+            <NavLink
+              to="/cart"
+              onClick={() => window.location.reload()}
+              className="cart-wrapper"
+            >
+              <Badge count={cart?.length} class="ms-3 ">
                 <BsCart4 class="cart-button" />
               </Badge>
             </NavLink>
-            <NavLink to="/signup">
-              <button class="header-signup">
-                <FaRegPenToSquare class="icon" />
-                Register
-              </button>
-            </NavLink>
-            <NavLink to="/login">
-              <button class="header-login">
-                <IoIosLock class="icon" />
-                Login
-              </button>
-            </NavLink>
+            {!ok && (
+              <>
+                <NavLink to="/signup">
+                  <button class="header-signup">
+                    <FaRegPenToSquare class="icon" />
+                    Register
+                  </button>
+                </NavLink>
+                <NavLink to="/login">
+                  <button class="header-login">
+                    <IoIosLock class="icon" />
+                    Login
+                  </button>
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
       </div>
