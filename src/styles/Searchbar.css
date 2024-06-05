@@ -79,3 +79,26 @@
     margin-left: 60px;
   }
 }
+
+.suggestions-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  z-index: 1000;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  color: gray;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
