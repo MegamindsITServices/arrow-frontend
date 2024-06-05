@@ -28,7 +28,7 @@ const Shop = () => {
   const [newCountFull, setNewCountFull] = useState(false);
   const [currentPage, setCurrentPage] = useState();
   const [countTotal, setCountTotal] = useState(1);
-  const [limit, setLimit] = useState(40);
+  const [limit, setLimit] = useState(48);
   const [searchParams, setSearchParams] = useSearchParams();
   const [jumpPage, setJumpPage] = useState();
 
@@ -58,7 +58,7 @@ const Shop = () => {
     getTotal();
   }, []);
 
-  const getAllProduct = async (pageNumber = page, limit = 40) => {
+  const getAllProduct = async (pageNumber = page, limit = 48) => {
     try {
       setLimit(40);
       let url = "/api/v1/product/get-product";
