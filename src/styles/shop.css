@@ -7,7 +7,7 @@
   position: absolute;
   top: 0;
   left: 0px;
-  z-index: 100;
+  z-index: 30;
   border-radius: 999px;
   background-color: #dc3545;
   padding: 0.25rem 0.5rem;
