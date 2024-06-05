@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "./../components/Layout/Layout";
 import { useSearch } from "../context/search";
+import { Link } from "react-router-dom";
 
 const Search = () => {
   const [values] = useSearch();
@@ -37,8 +38,12 @@ const Search = () => {
                         currency: "INR",
                       })}
                     </h4>
-                    <button className="Butn ms-1 mb-3">More Details</button>
-                    <button className="Butn ms-1">ADD TO CART</button>
+                    <Link to={"/product/" + p?.uid} className="Butn ms-1 mb-3">
+                      More Details
+                    </Link>
+                    <Link to={"/product/" + p?.uid} className="Butn ms-1">
+                      ADD TO CART
+                    </Link>
                   </div>
                 </div>
               </div>
