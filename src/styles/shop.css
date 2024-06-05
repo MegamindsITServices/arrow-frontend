@@ -490,3 +490,42 @@
 .disabled {
   cursor: not-allowed;
 }
+
+.jump-to {
+  gap: 0.2rem;
+  align-items: center;
+}
+
+.jump-to-text {
+  font-size: 0.9rem;
+  padding-top: 8px;
+  font-weight: 100;
+  color: #e18e4f;
+}
+
+.jump-to-input {
+  width: 60px;
+  color: #e0731d;
+  outline: auto;
+  border-radius: 5px;
+  text-align: center;
+  border: none;
+}
+
+.jump-to-input::-webkit-outer-spin-button,
+.jump-to-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.jump-to-btn {
+  background-color: #e0731d;
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 8px;
+}
