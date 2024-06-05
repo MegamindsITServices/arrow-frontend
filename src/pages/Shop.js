@@ -5,7 +5,7 @@ import "../styles/button.css";
 import "../styles/style.css";
 import "../styles/hero.css";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import swal from "sweetalert";
 import { Prices } from "../components/Prices";
 import { useAuth } from "../context/Auth";
@@ -21,14 +21,16 @@ const Shop = () => {
   const [selectCategory, setSelectCategory] = useState("");
   const [selectSubject, setSelectSubject] = useState("");
   const [selectRadio, setSelectRadio] = useState("");
-  const [setTotal] = useState(0);
+  const [total, setTotal] = useState(0);
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
   const [viewMode, setViewMode] = useState("list");
-
-  const [currentPage, setCurrentPage] = useState(1);
+  const [newCountFull, setNewCountFull] = useState(false);
+  const [currentPage, setCurrentPage] = useState();
   const [countTotal, setCountTotal] = useState(1);
   const [limit, setLimit] = useState(40);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [jumpPage, setJumpPage] = useState();
 
   const getAllCategory = async () => {
     try {
@@ -56,8 +58,9 @@ const Shop = () => {
     getTotal();
   }, []);
 
-  const getAllProduct = async (pageNumber = currentPage, limit = 40) => {
+  const getAllProduct = async (pageNumber = page, limit = 40) => {
     try {
+      setLimit(40);
       let url = "/api/v1/product/get-product";
 
       url += `?pageNumber=${pageNumber}&limit=${limit}`;
@@ -70,6 +73,8 @@ const Shop = () => {
     }
   };
 
+  // Product Filter Logic
+
   const handleFilter = (value) => {
     setSelectCategory(value);
   };
@@ -77,21 +82,54 @@ const Shop = () => {
     setSelectSubject(value);
   };
   useEffect(() => {
-    if (!selectCategory || !selectSubject) getAllProduct();
+    if (!category && !subject) {
+      getAllProduct();
+    }
   }, [auth]);
 
+  var subject = searchParams.get("subject")?.toString();
+  var category = searchParams.get("class")?.toString();
+  const page = parseInt(searchParams.get("page"));
+
   useEffect(() => {
-    if (selectCategory || selectSubject) filterProduct();
+    subject = searchParams.get("subject")?.toString();
+    category = searchParams.get("class")?.toString();
+    setCurrentPage(page);
+  }, []);
+
+  useEffect(() => {
+    if (selectCategory) {
+      searchParams.set("class", selectCategory);
+      setSearchParams(searchParams);
+    }
+    if (selectSubject) {
+      searchParams.set("subject", selectSubject);
+      setSearchParams(searchParams);
+    }
   }, [selectCategory, selectSubject]);
+
+  useEffect(() => {
+    setSelectCategory(category);
+    setSelectSubject(subject);
+    if (subject || category) filterProduct();
+  }, [subject, category]);
+
+  // Set Class and subject at query params
+
+  // Read query parameters
 
   const filterProduct = async () => {
     try {
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+      setLimit(1000);
       const { data } = await axios.post("/api/v1/product/product-filters", {
-        category: selectCategory,
-        subject: selectSubject,
+        category: category,
+        subject: subject,
         radio: selectRadio,
       });
       setProducts(data?.products);
+      setCountTotal(data?.countTotal);
     } catch (error) {
       console.log(error);
     }
@@ -144,7 +182,12 @@ const Shop = () => {
 
   //reset button
   const handleReset = () => {
+    searchParams.delete("class");
+    searchParams.delete("subject");
+    searchParams.set("page", 1);
+    setSearchParams(searchParams);
     setSelectCategory("");
+    setSelectSubject("");
     setSelectRadio("");
     getAllProduct();
   };
@@ -152,7 +195,7 @@ const Shop = () => {
   // const handlePageChange = (page) => {
   //   setCurrentPage(page);
   // };
-  let length;
+  var length;
   const renderPage = () => {
     let pages = [];
     length = Math.ceil(countTotal / limit);
@@ -191,15 +234,25 @@ const Shop = () => {
   const handlePageClick = (e, pageNumber) => {
     e.preventDefault(); // Prevent default behavior
     setCurrentPage(pageNumber);
+    handlePageChange(pageNumber);
   };
+
+  let newCount = 0;
 
   const isNewProduct = (product) => {
     // Convert the creation date string to a Date object
+    if (newCount > 30 || newCountFull) {
+      return false;
+    }
+    // console.log(newCount);
     const creationDate = new Date(product.createdAt);
     const timeDifference = new Date() - creationDate;
     const differenceInDays = timeDifference / (1000 * 3600 * 24);
-    // Return true if the product is less than or equal to 3 days old, otherwise false
-    return differenceInDays <= 30;
+    if (differenceInDays <= 30) {
+      newCount++;
+      return true;
+    }
+    return false;
   };
 
   // const renderBadge = (product) => {
@@ -217,10 +270,32 @@ const Shop = () => {
   //   setSelectRadio(e.target.value);
   // };
 
+  // Set the query param page number
+  const handlePageChange = (page) => {
+    searchParams.set("page", page);
+    setSearchParams(searchParams);
+  };
+
   useEffect(() => {
-    if (currentPage < 1 || currentPage > length) return;
-    getAllProduct(currentPage);
+    if (currentPage >= 1) {
+      handlePageChange(currentPage);
+    }
   }, [currentPage]);
+
+  useEffect(() => {
+    // Set initial query parameters on component mount
+    if (!searchParams.get("page")) {
+      searchParams.set("page", "1");
+      setSearchParams(searchParams);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    setCurrentPage(page);
+    if (!category && !subject) {
+      getAllProduct(page);
+    }
+  }, [page]);
 
   return (
     <Layout>
@@ -275,10 +350,7 @@ const Shop = () => {
               style={{ textAlign: "center" }}
               onChange={(e) => handleFilter(e.target.value)}
             >
-              <option
-                value={selectCategory}
-                selected={selectCategory ? false : true}
-              >
+              <option value={""} selected={selectCategory ? false : true}>
                 Filter by Class &#9660;
               </option>
               {categories?.map((c) => (
@@ -298,10 +370,7 @@ const Shop = () => {
               style={{ textAlign: "center" }}
               onChange={(e) => handleFilterSubject(e.target.value)}
             >
-              <option
-                value={selectSubject}
-                selected={selectSubject ? false : true}
-              >
+              <option value={""} selected={selectSubject ? false : true}>
                 Filter by Subject &#9660;
               </option>
               {subjects?.map((s) => (
@@ -530,7 +599,7 @@ const Shop = () => {
                   ) : (
                     <a
                       className={`page-link ${
-                        x === currentPage && "active-page"
+                        x === parseInt(page) && "active-page"
                       }`}
                       href="javascript:void(0)"
                       onClick={(e) => handlePageClick(e, x)}
@@ -544,6 +613,7 @@ const Shop = () => {
               <li
                 className={`page-item ${currentPage >= length && "disabled"}`}
                 onClick={(e) => {
+                  console.log("Current page: ", currentPage + 1);
                   if (currentPage >= length) return;
                   setCurrentPage(currentPage + 1);
                 }}
@@ -557,6 +627,23 @@ const Shop = () => {
                 </a>
               </li>
             </ul>
+            <div className="d-flex justify-content-center jump-to align-items-center">
+              {/* Jump to page */}
+              <p className="jump-to-text me-2">or </p>
+              <input
+                type="number"
+                placeholder="page"
+                className="jump-to-input p-1"
+                onChange={(e) => setJumpPage(e.target.value)}
+              />
+              <button
+                className="jump-to-btn"
+                type="submit"
+                onClick={() => handlePageChange(jumpPage)}
+              >
+                Go
+              </button>
+            </div>
           </nav>
         </div>
       </div>
