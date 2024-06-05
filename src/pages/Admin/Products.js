@@ -3,7 +3,7 @@ import AdminMenu from "../../components/Layout/AdminMenu";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "../../styles/product.css";
 import swal from "sweetalert";
 import SearchInput from "../../components/Form/SearchInput";
@@ -13,14 +13,20 @@ import { getConfig, axiosInstance } from "../../utils/request.js";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   //get all products
   const [currentPage, setCurrentPage] = useState(1);
   const [countTotal, setCountTotal] = useState(1);
   const [limit, setLimit] = useState(40);
-
-  const getAllProducts = async (pageNumber = currentPage, limit = 40) => {
+  const [jumpPage, setJumpPage] = useState();
+  const page = parseInt(searchParams.get("page"));
+  useEffect(() => {
+    setCurrentPage(page);
+  }, []);
+  const getAllProduct = async (pageNumber = page, limit = 40) => {
     try {
+      setLimit(40);
       let url = "/api/v1/product/get-product";
 
       url += `?pageNumber=${pageNumber}&limit=${limit}`;
@@ -33,7 +39,7 @@ const Products = () => {
     }
   };
   useEffect(() => {
-    getAllProducts();
+    getAllProduct();
   }, []);
   //delete a product
   const handleDelete = async (pid) => {
@@ -53,7 +59,7 @@ const Products = () => {
         const { data } = await axiosInstance.delete(
           `/api/v1/product/delete-product/${pid}`
         );
-        getAllProducts();
+        getAllProduct();
         navigate("/dashboard/admin/products");
       } else {
         // If the user cancels deletion
@@ -107,12 +113,35 @@ const Products = () => {
   const handlePageClick = (e, pageNumber) => {
     e.preventDefault(); // Prevent default behavior
     setCurrentPage(pageNumber);
+    handlePageChange(pageNumber);
+  };
+
+  const handlePageChange = (page) => {
+    console.log("Handle page change");
+    searchParams.set("page", page);
+    setSearchParams(searchParams);
   };
 
   useEffect(() => {
-    if (currentPage < 1 || currentPage > length) return;
-    getAllProducts(currentPage);
+    if (currentPage > 1) {
+      console.log("Current page: " + currentPage);
+      handlePageChange(currentPage);
+    }
   }, [currentPage]);
+
+  useEffect(() => {
+    // Set initial query parameters on component mount
+    if (!searchParams.get("page")) {
+      console.log("Page in 288: ", page);
+      handlePageChange(1);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    setCurrentPage(page);
+
+    getAllProduct(page);
+  }, [page]);
 
   return (
     <Layout>
@@ -129,7 +158,7 @@ const Products = () => {
             </div>
             <div className="row">
               {products?.map((p, index) => (
-                <div key={p._id} className="col-sm-6 col-lg-3 col-xl-3">
+                <div key={p._id} className="col-sm-6 col-lg-3">
                   <div className="card-6 mb-3">
                     <img
                       src={`/api/v1/product/product-photo/${p._id}`}
@@ -220,6 +249,23 @@ const Products = () => {
                 </a>
               </li>
             </ul>
+            <div className="d-flex justify-content-center jump-to align-items-center">
+              {/* Jump to page */}
+              <p className="jump-to-text me-2">or </p>
+              <input
+                type="number"
+                placeholder="page"
+                className="jump-to-input p-1"
+                onChange={(e) => setJumpPage(e.target.value)}
+              />
+              <button
+                className="jump-to-btn"
+                type="submit"
+                onClick={() => handlePageChange(jumpPage)}
+              >
+                Go
+              </button>
+            </div>
           </nav>
         </div>
       </div>
