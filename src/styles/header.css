@@ -2,7 +2,7 @@
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
 }
 .navbar-nav {
   display: flex; /* Ensure navbar items are displayed in a row */
@@ -190,7 +190,11 @@
     margin-bottom: 10px;
   }
   .cart-button {
-    margin-left: -37px;
+    margin-left: 0px;
+    /* margin-top: 1rem; */
+  }
+  .cart-wrapper {
+    margin-top: 1rem;
   }
   .header-phone,
   .header-mail {
@@ -287,6 +291,9 @@
     width: 200px;
   }
   .search-container {
+    margin-left: -5px;
+  }
+  .search-button {
     display: none;
   }
 }
