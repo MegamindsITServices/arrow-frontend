@@ -12,6 +12,7 @@ import { useAuth } from "../context/Auth";
 import "../styles/shop.css";
 import { TfiViewListAlt } from "react-icons/tfi";
 import { MdOutlineCalendarViewMonth } from "react-icons/md";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 const Shop = () => {
   const navigate = useNavigate();
@@ -241,7 +242,7 @@ const Shop = () => {
 
   const isNewProduct = (product) => {
     // Convert the creation date string to a Date object
-    if (newCount > 30 || newCountFull) {
+    if (newCount >= 30 || page !== 1) {
       return false;
     }
     // console.log(newCount);
@@ -254,6 +255,10 @@ const Shop = () => {
     }
     return false;
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   // const renderBadge = (product) => {
   //   if (isNewProduct(product)) {
