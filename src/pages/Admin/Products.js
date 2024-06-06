@@ -123,6 +123,10 @@ const Products = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
+
+  useEffect(() => {
     if (currentPage > 1) {
       console.log("Current page: " + currentPage);
       handlePageChange(currentPage);
