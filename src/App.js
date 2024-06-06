@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -51,6 +51,8 @@ import ViewHomePageBook from "./pages/Admin/ViewHomePageBook";
 import CreateDealerState from "./pages/Admin/CreateDealerState";
 import ViewDealerNetwork from "./pages/ViewDealerNetwork";
 import SearchAdmin from "./pages/Admin/SearchAdmin";
+import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 // import OwnerRoute from "./components/Routes/OwnerRoutes";
 // import OwnerDashboard from "./pages/Owners/OwnerDashboard";
 
@@ -58,6 +60,8 @@ function App() {
   return (
     <>
       {/* <HashRouter> */}
+      <ScrollToTopButton />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<About />} />
