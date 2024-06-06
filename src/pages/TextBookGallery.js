@@ -89,11 +89,6 @@ const TextBookGallery = () => {
             >
               {products.map((p, index) => (
                 <div className="card-1 m-4" key={p._id}>
-                  {isNewProduct(p) && (
-                    <span className="badge-new" style={{ marginTop: "9px" }}>
-                      <strong className="new">New</strong>
-                    </span>
-                  )}
                   <img
                     src={`/api/v1/product/product-photo/${p._id}`}
                     className="card-img-homepage"
@@ -119,8 +114,9 @@ const TextBookGallery = () => {
             <div className="download">
               <img src={PDF} height="36px" alt="" />
               <a
-                href="https://example.com/kids-book-catalogue.pdf"
-                className="download-catalogue-link "
+                download="catalouge-2024.pdf"
+                href={`https://bharathmegaminds.com/catalouge-2024.pdf`}
+                className="download-catalogue-link"
               >
                 <h6>
                   Download<span className="ms-1">Catalogue</span>
