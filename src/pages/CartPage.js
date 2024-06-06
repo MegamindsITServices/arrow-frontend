@@ -255,10 +255,10 @@ const CartPage = () => {
     <Layout>
       <div className="row ">
         <div className="col-md-12">
-          <h3 className="text-center auth-content p-2 mb-1">
+          <h3 className="text-center p-2 mb-1">
             {!auth?.user
               ? "Hello Guest"
-              : `Hello. ${auth?.token && auth?.user?.name}`}
+              : `Hello, ${auth?.token && auth?.user?.name}!`}
             <p className="text-center">
               {cart?.length
                 ? `You have ${cart.length} items in your cart. ${
@@ -269,71 +269,80 @@ const CartPage = () => {
           </h3>
         </div>
       </div>
-      <div className="col-md-9">
-        <div className="row">
-          <div className="col-md-7">
+      <div className="col-lg-11 mx-auto">
+        <div className="row justify-content-between cart-wrapper">
+          <div className="col-lg-7">
             <div className="row">
               {cart?.map((p) => (
                 <React.Fragment key={p._id}>
-                  <div className="row mt-3 p-3 card-cart auth-content flex-row">
-                    <div className="col-md-4">
+                  <div className="row p-3 card-cart flex-row">
+                    <div className="col-sm-4">
                       <img
                         src={`/api/v1/product/product-photo/${p._id}`}
-                        className="mb-3 mt-3"
+                        className="mb-1 mt-1"
                         alt={p.name}
                       />
                     </div>
-                    <div className="col-md-8 card-body">
+                    <div className="col-sm-8 card-body">
                       <h6>
                         <b>Name : {p.name}</b>
                       </h6>
-                      <h6>{p.description.substring(0, 80)}</h6>
-                      <h4>Price : ₹{p.price}</h4>
                       <div className="quantity-controls">
-                        <button
-                          className="quantity-btn"
-                          onClick={() => decreaseQuantity(p._id)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#090101"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-minus"
+                        <h4>Price : ₹{p.price}</h4>
+                        <div>
+                          <button
+                            className="quantity-btn"
+                            onClick={() => decreaseQuantity(p._id)}
                           >
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M5 12l14 0" />
-                          </svg>
-                        </button>
-                        <span className="quantity">
-                          <strong>{quantities[p._id]}</strong>
-                        </span>
-                        <button
-                          className="quantity-btn"
-                          onClick={() => increaseQuantity(p._id)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#090101"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-plus"
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#090101"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              class="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-minus"
+                            >
+                              <path
+                                stroke="none"
+                                d="M0 0h24v24H0z"
+                                fill="none"
+                              />
+                              <path d="M5 12l14 0" />
+                            </svg>
+                          </button>
+                          <span className="quantity">
+                            <strong>{quantities[p._id]}</strong>
+                          </span>
+                          <button
+                            className="quantity-btn"
+                            onClick={() => increaseQuantity(p._id)}
                           >
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 5l0 14" />
-                            <path d="M5 12l14 0" />
-                          </svg>
-                        </button>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#090101"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              class="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-plus"
+                            >
+                              <path
+                                stroke="none"
+                                d="M0 0h24v24H0z"
+                                fill="none"
+                              />
+                              <path d="M12 5l0 14" />
+                              <path d="M5 12l14 0" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
 
                       <button
@@ -349,50 +358,48 @@ const CartPage = () => {
             </div>
           </div>
 
-          <div className="col-md-5 cart-col text-center">
-            <div className="row">
-              <div className="col-md-14 auth-content">
-                <h2>Cart summary</h2>
-                <p>Total | Checkout | Payment</p>
-                <hr />
-                <h4 className="text-dark">Total: {totalPrice()}</h4>
-                {auth?.user?.address ? (
-                  <div className="mb-3">
-                    <h4>Current Address</h4>
-                    <h5>{auth?.user?.address}</h5>
+          <div className="col-lg-4 cart-col text-center">
+            <div className="auth-content">
+              <h2>Cart summary</h2>
+              <p>Total | Checkout | Payment</p>
+              <hr />
+              <h4 className="text-dark">Total: {totalPrice()}</h4>
+              {auth?.user?.address ? (
+                <div className="mb-3">
+                  <h4>Current Address:</h4>
+                  <h5>{auth?.user?.address}</h5>
+                  <button
+                    className="Butn"
+                    onClick={() => navigate("/dashboard/user/profile")}
+                  >
+                    Update Address
+                  </button>
+                </div>
+              ) : (
+                <div className="mb-3">
+                  {auth?.token ? (
                     <button
-                      className="Butn"
+                      className="btn btn-outline-warning"
                       onClick={() => navigate("/dashboard/user/profile")}
                     >
                       Update Address
                     </button>
-                  </div>
-                ) : (
-                  <div className="mb-3">
-                    {auth?.token ? (
-                      <button
-                        className="btn btn-outline-warning"
-                        onClick={() => navigate("/dashboard/user/profile")}
-                      >
-                        Update Address
-                      </button>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                )}
-                {cart && cart?.length > 0 && (
-                  <div className="mt-2">
-                    <button
-                      className="Butn"
-                      onClick={() => handlePayment()}
-                      type="button"
-                    >
-                      {loading ? "Processing ...." : "Make Payment"}
-                    </button>
-                  </div>
-                )}
-              </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              )}
+              {cart && cart?.length > 0 && (
+                <div className="mt-2">
+                  <button
+                    className="Butn"
+                    onClick={() => handlePayment()}
+                    type="button"
+                  >
+                    {loading ? "Processing ...." : "Make Payment"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
