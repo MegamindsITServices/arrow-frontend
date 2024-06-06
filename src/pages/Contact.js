@@ -9,6 +9,7 @@ import { FaMapLocationDot } from "react-icons/fa6";
 import emailjs from "@emailjs/browser";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 const Contact = () => {
   const [states, setStates] = useState([]);
   const [selectedState, setSelectedState] = useState("");
@@ -27,7 +28,7 @@ const Contact = () => {
       })
       .then(
         () => {
-          alert("Your query has been sent successfully.");
+          swal("Your query has been sent successfully.", "Sent", "success");
           console.log("SUCCESS!");
         },
         (error) => {
@@ -106,7 +107,7 @@ const Contact = () => {
         </div>
 
         <div className="container">
-          <div className="row justify-content-center">
+          <div className="row justify-content-center align-items-center">
             <div className="col-md-6">
               <div className="">
                 <h4 className="enq">View Arrow Executives</h4>
@@ -222,7 +223,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-6 location">
               <FaMapLocationDot className="loc-icon" />
               <img src={map} alt="" className="qr" />
             </div>
