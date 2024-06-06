@@ -44,7 +44,7 @@ const ArrowActivity = () => {
           </div>
         </div>
 
-        <div class="container mt-3">
+        <div class="container arrow-activity mt-5">
           <div class="row">
             {allPosts.map((post, index) => (
               <>
@@ -55,7 +55,7 @@ const ArrowActivity = () => {
                     <p className="content">{post.content}</p>
                   </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                   <div class="carousel-container-arrow">
                     <Carousel>
                       <Carousel.Item>
