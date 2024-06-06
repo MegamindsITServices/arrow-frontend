@@ -175,6 +175,7 @@
 
 .location-icon {
   font-size: 23px;
+  text-align: center;
 }
 .mail {
   margin-top: 31px;
@@ -202,14 +203,11 @@
   width: 85%;
   height: auto; /* Adjust height automatically */
   margin-left: 80%; /* Align to the right */
-  margin-top: 9%;
+  margin-top: 10%;
 }
 .loc-icon {
   height: 50px; /* Adjust height automatically */
   width: 30px;
-  margin-left: 98%;
-  margin-top: 47%; /* Add some top margin for spacing */
-  margin-bottom: -40px;
 }
 .input {
   border-radius: 0;
@@ -241,6 +239,17 @@
   width: 17%;
   margin-left: 73%;
   margin-bottom: 100px;
+}
+.location {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.loc-icon {
+  position: absolute;
+  right: -20%;
+  top: -10px;
 }
 
 .enquiry-text {
@@ -363,14 +372,16 @@
   .loc-icon {
     height: 50px; /* Adjust height automatically */
     width: 30px;
-    margin-left: 47%;
-    margin-top: 1%; /* Add some top margin for spacing */
+    margin-left: 20%;
+
+    position: inherit;
   }
   .qr {
     width: 70%;
     height: 70%; /* Adjust height automatically */
     margin-left: 16%;
     margin-bottom: 10px; /* Align to the right */
+    margin-top: 1px;
   }
 }
 @media (min-width: 769px) and (max-width: 1180px) {
