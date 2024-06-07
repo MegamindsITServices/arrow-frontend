@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import loadingImg from "../images/loading.gif";
 import { getConfig, axiosInstance } from "../utils/request.js";
+import ReactImageMagnify from "react-image-magnify";
 
 const ProductDetails = () => {
   const navigate = useNavigate();
@@ -122,12 +123,12 @@ const ProductDetails = () => {
   return (
     <Layout>
       <div className="font">
-        <div className="row container product-details mt-3">
-          <div className="col-md-6 d-flex align-items-center justify-content-center">
+        <div className="row container align-items-center justify-content-end gap-5 product-details mt-3">
+          <div className="col-md-4 d-flex align-items-center justify-content-center">
             {isLoading && (
               <img
                 src={loadingImg}
-                alt={"Image loading"}
+                alt="Image loading"
                 className="product-details-img"
               />
             )}
@@ -138,25 +139,57 @@ const ProductDetails = () => {
                   activeIndex={index}
                   indicators={false}
                   controls={false}
-                  interval={1000}
+                  interval={3000}
                   onSelect={handleSelect}
                   className="carousel-product-details"
                 >
-                  {images.map((i) => (
-                    <Carousel.Item>
-                      <img src={i} className="product-details-img" />
+                  {images.map((i, idx) => (
+                    <Carousel.Item key={idx}>
+                      <ReactImageMagnify
+                        {...{
+                          smallImage: {
+                            alt: "Product image",
+                            isFluidWidth: true,
+                            src: i,
+                          },
+                          largeImage: {
+                            src: i,
+                            width: 1200,
+                            height: 1800,
+                          },
+                          enlargedImageContainerDimensions: {
+                            width: "100%",
+                            height: "100%",
+                          },
+                          enlargedImagePosition: "over", // Ensures the zoom appears over the image
+                        }}
+                        className="product-details-img"
+                      />
                     </Carousel.Item>
                   ))}
                 </Carousel>
               </div>
             ) : (
-              <>
-                <img
-                  src={images[0]}
-                  // alt={product.name}
-                  className="product-details-img"
-                />
-              </>
+              <ReactImageMagnify
+                {...{
+                  smallImage: {
+                    alt: "Product image",
+                    isFluidWidth: true,
+                    src: images[0],
+                  },
+                  largeImage: {
+                    src: images[0],
+                    width: 1000,
+                    height: 1500,
+                  },
+                  enlargedImageContainerDimensions: {
+                    width: "100%",
+                    height: "100%",
+                  },
+                  enlargedImagePosition: "over", // Ensures the zoom appears over the image
+                }}
+                className="product-details-img"
+              />
             )}
           </div>
           <div className="col-md-6 product-details-info">
