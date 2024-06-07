@@ -63,7 +63,7 @@ const AdminMenu = () => {
                       <path d="M4 4h6v6h-6zm10 0h6v6h-6zm-10 10h6v6h-6zm10 3h6m-3 -3v6" />
                     </svg>
                   </span>
-                  <span className="hide-menu">Create Class</span>
+                  <span className="hide-menu">Create Category</span>
                 </NavLink>
               </li>
 
@@ -127,7 +127,6 @@ const AdminMenu = () => {
                   <span className="hide-menu">Banner Controller</span>
                 </NavLink>
               </li>
-             
 
               <li className="sidebar-item">
                 <NavLink
@@ -202,6 +201,38 @@ const AdminMenu = () => {
                     </svg>
                   </span>
                   <span className="hide-menu">Upload Product CSV Data</span>
+                </NavLink>
+              </li>
+
+              <li className="sidebar-item">
+                <NavLink
+                  className="sidebar-link"
+                  to="/dashboard/admin/new_release_book"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon icon-tabler icons-tabler-outline icon-tabler-photo-up"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M15 8h.01" />
+                      <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+                      <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3.5 3.5" />
+                      <path d="M14 14l1 -1c.679 -.653 1.473 -.829 2.214 -.526" />
+                      <path d="M19 22v-6" />
+                      <path d="M22 19l-3 -3l-3 3" />
+                    </svg>
+                  </span>
+                  <span className="hide-menu">New Release Book</span>
                 </NavLink>
               </li>
 
@@ -451,6 +482,35 @@ const AdminMenu = () => {
                     </svg>
                   </span>
                   <span className="hide-menu">View Executives</span>
+                </NavLink>
+              </li>
+              <li className="sidebar-item">
+                <NavLink
+                  className="sidebar-link"
+                  to="/dashboard/admin/view_new_releases"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon icon-tabler icons-tabler-outline icon-tabler-photo"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M15 8h.01" />
+                      <path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z" />
+                      <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />
+                      <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />
+                    </svg>
+                  </span>
+                  <span className="hide-menu">View New Releases </span>
                 </NavLink>
               </li>
               <li className="sidebar-item">
