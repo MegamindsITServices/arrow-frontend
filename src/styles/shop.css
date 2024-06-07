@@ -7,7 +7,7 @@
   position: absolute;
   top: 0;
   left: 0px;
-  z-index: 30;
+  z-index: 10;
   border-radius: 999px;
   background-color: #dc3545;
   padding: 0.25rem 0.5rem;
@@ -326,7 +326,7 @@
     padding: 0 1rem;
   }
   .card-8 {
-    width: 97%; /* Set the width to 100% to occupy available space */
+    width: fit-content; /* Set the width to 100% to occupy available space */
     margin-bottom: 40px;
     border: 3px solid white;
     display: flex;
