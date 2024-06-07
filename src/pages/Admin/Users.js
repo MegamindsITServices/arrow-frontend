@@ -4,6 +4,7 @@ import AdminMenu from "../../components/Layout/AdminMenu";
 import axios from "axios";
 import { useAuth } from "../../context/Auth";
 import "../../styles/adminuserorder.css";
+import AdminBackButton from "../../components/AdminBackButton";
 
 const Users = () => {
   const [orders, setOrders] = useState([]);
@@ -29,6 +30,7 @@ const Users = () => {
         { status: newStatus }
       );
       const updatedOrder = response.data;
+
       // Update the local state with the updated order
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
@@ -61,7 +63,10 @@ const Users = () => {
             <AdminMenu />
           </div> */}
           <div className="col-md-12">
-            <h1 className="text-center">All Orders</h1>
+            <div className="position-relative">
+              <AdminBackButton />
+              <h1 className="text-center">All Orders</h1>
+            </div>
             <div className="border shadow">
               <table className="table">
                 <thead>
@@ -80,96 +85,105 @@ const Users = () => {
                 </thead>
                 <tbody>
                   {orders.map((order, index) => (
-                    <tr key={order._id}>
-                      <td>
-                        <strong>{index + 1}</strong>
-                      </td>
-                      <td>{order.name}</td>
-                      <td className="add">{order.address}</td>
-                      <td>
-                        {order.products_name.map((productName, idx) => (
-                          <div key={idx}>{`${idx + 1} . ${productName}`}</div>
-                        ))}
-                      </td>
-                      {/* <td>
+                    <>
+                      {order.status !== "Cancelled" && (
+                        <tr key={order._id}>
+                          <td>
+                            <strong>{index + 1}</strong>
+                          </td>
+                          <td>{order.name}</td>
+                          <td className="add">{order.address}</td>
+                          <td>
+                            {order.products_name.map((productName, idx) => (
+                              <div key={idx}>{`${
+                                idx + 1
+                              } . ${productName}`}</div>
+                            ))}
+                          </td>
+                          {/* <td>
                         {order.quantities.map((item, idx) => (
                           <div key={idx}>
                             {item.product}: {item.quantity}
                           </div>
                         ))}
                       </td> */}
-                      <td>
-                        {order.quantities.map((item, idx) => (
-                          <div key={idx}>{item.quantity}</div>
-                        ))}
-                      </td>
-                      <td>{order.products.length}</td>
-                      <td>{formatDateTime(order.createdAt)}</td>
-                      <td>
-                        <b>₹{order.payment.toFixed(2)}</b>
-                      </td>
-                      <td>{order.status}</td>
-                      <td>
-                        <div className="dropdown">
-                          <button
-                            type="button"
-                            id={`dropdownMenuButton-${index}`}
-                            className="active-link dropdown-toggle"
-                            href="#"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            style={{ border: "none" }}
-                          >
-                            Change Status
-                          </button>
-                          <ul
-                            className="dropdown-menu"
-                            aria-labelledby={`dropdownMenuButton-${index}`}
-                          >
-                            <li>
+                          <td>
+                            {order.quantities.map((item, idx) => (
+                              <div key={idx}>{item.quantity}</div>
+                            ))}
+                          </td>
+                          <td>{order.products.length}</td>
+                          <td>{formatDateTime(order.createdAt)}</td>
+                          <td>
+                            <b>₹{order.payment.toFixed(2)}</b>
+                          </td>
+                          <td>{order.status}</td>
+                          <td>
+                            <div className="dropdown">
                               <button
-                                className="dropdown-item"
-                                onClick={() =>
-                                  handleStatusChange(order._id, "Processing")
-                                }
+                                type="button"
+                                id={`dropdownMenuButton-${index}`}
+                                className="active-link dropdown-toggle"
+                                href="#"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                style={{ border: "none" }}
                               >
-                                Processing
+                                Change Status
                               </button>
-                            </li>
-                            <li>
-                              <button
-                                className="dropdown-item"
-                                onClick={() =>
-                                  handleStatusChange(order._id, "Shipped")
-                                }
+                              <ul
+                                className="dropdown-menu"
+                                aria-labelledby={`dropdownMenuButton-${index}`}
                               >
-                                Shipped
-                              </button>
-                            </li>
-                            <li>
-                              <button
-                                className="dropdown-item"
-                                onClick={() =>
-                                  handleStatusChange(order._id, "Delivered")
-                                }
-                              >
-                                Delivered
-                              </button>
-                            </li>
-                            <li>
-                              <button
-                                className="dropdown-item"
-                                onClick={() =>
-                                  handleStatusChange(order._id, "Cancelled")
-                                }
-                              >
-                                Cancelled
-                              </button>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
+                                <li>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChange(
+                                        order._id,
+                                        "Processing"
+                                      )
+                                    }
+                                  >
+                                    Processing
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChange(order._id, "Shipped")
+                                    }
+                                  >
+                                    Shipped
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChange(order._id, "Delivered")
+                                    }
+                                  >
+                                    Delivered
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChange(order._id, "Cancelled")
+                                    }
+                                  >
+                                    Cancelled
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   ))}
                 </tbody>
               </table>
