@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getConfig, axiosInstance } from "../../utils/request";
+import AdminBackButton from "../../components/AdminBackButton";
 
 const CanceledOrders = () => {
   const [canceledOrders, setCanceledOrders] = useState([]);
@@ -21,7 +22,8 @@ const CanceledOrders = () => {
   }, []);
   return (
     <>
-      <div>
+      <div className="position-relative">
+        <AdminBackButton />
         <h1 className="text-black d-flex justify-content-center">
           Canceled Orders
         </h1>
