@@ -76,7 +76,7 @@ const Contact = () => {
       </div>
       <div className="body1">
         <div className="p-1 d-flex justify-content-around mt-3 ">
-          <div className="px-3 pt-1 pb-3 border w-26 cart">
+          <div className="px-3 pt-1 pb-3 text-center border w-26 cart">
             <p className="address">
               <SlLocationPin className="location-icon" /> C-11 A & B, TSIIC,
               Moula-Ali, Hyderabad - 500 040
