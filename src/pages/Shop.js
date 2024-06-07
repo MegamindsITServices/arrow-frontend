@@ -238,23 +238,23 @@ const Shop = () => {
     handlePageChange(pageNumber);
   };
 
-  let newCount = 0;
+  // let newCount = 0;
 
-  const isNewProduct = (product) => {
-    // Convert the creation date string to a Date object
-    if (newCount >= 30 || page !== 1) {
-      return false;
-    }
-    // console.log(newCount);
-    const creationDate = new Date(product.createdAt);
-    const timeDifference = new Date() - creationDate;
-    const differenceInDays = timeDifference / (1000 * 3600 * 24);
-    if (differenceInDays <= 30) {
-      newCount++;
-      return true;
-    }
-    return false;
-  };
+  // const isNewProduct = (product) => {
+  //   // Convert the creation date string to a Date object
+  //   if (newCount >= 30 || page !== 1) {
+  //     return false;
+  //   }
+  //   // console.log(newCount);
+  //   const creationDate = new Date(product.createdAt);
+  //   const timeDifference = new Date() - creationDate;
+  //   const differenceInDays = timeDifference / (1000 * 3600 * 24);
+  //   if (differenceInDays <= 30) {
+  //     newCount++;
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -508,19 +508,19 @@ const Shop = () => {
             >
               {products?.map((product, index) => (
                 <div
-                  className="col"
+                  className="col d-flex justify-content-center"
                   key={product._id}
                   style={{ marginBottom: "3rem" }}
                 >
                   <Link to={`/product/${product.uid}`}>
                     <div className="card-8 ms-2 mb-2">
-                      <div>
+                      {/* <div>
                         {isNewProduct(product) && (
                           <span className="new-badge-shop">
                             <strong className="new">New</strong>
                           </span>
                         )}
-                      </div>
+                      </div> */}
                       <div className="title-img">
                         <img
                           src={`/api/v1/product/product-photo/${product._id}`}
