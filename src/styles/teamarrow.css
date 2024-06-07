@@ -193,13 +193,13 @@
   }
   .team-body {
     background-color: #e6e6e6;
-    height: 54em;
+    height: auto;
   }
   .card1 {
     display: flex;
     justify-content: center;
     color: white;
-    height: 170px;
+    height: auto;
   }
   .card img {
     width: 234px;
@@ -213,7 +213,7 @@
     margin-bottom: 5px;
   }
   .card-text-team {
-    font-size: 16px;
+    font-size: 14px;
     text-align: justify;
     margin-right: 20px;
     line-height: 1.2; /* Set line height to 1 for no gap between lines */
