@@ -119,8 +119,7 @@ const Header = () => {
               <SearchInput />
             </div>
             <NavLink
-              to="/cart"
-              onClick={() => window.location.reload()}
+             onClick={handleCartClick}
               className="cart-wrapper"
             >
               <Badge count={cart?.length} class="ms-3 ">
