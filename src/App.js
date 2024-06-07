@@ -53,6 +53,8 @@ import ViewDealerNetwork from "./pages/ViewDealerNetwork";
 import SearchAdmin from "./pages/Admin/SearchAdmin";
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import NewReleaseBook from "./pages/Admin/NewReleaseBook";
+import ViewNewRelease from "./pages/Admin/ViewNewRelease";
 // import OwnerRoute from "./components/Routes/OwnerRoutes";
 // import OwnerDashboard from "./pages/Owners/OwnerDashboard";
 
@@ -114,7 +116,9 @@ function App() {
             path="admin/homepage_book_post"
             element={<HomePageBookPost />}
           />
+          <Route path="admin/new_release_book" element={<NewReleaseBook />} />
           <Route path="admin/view_home_book" element={<ViewHomePageBook />} />
+          <Route path="admin/view_new_releases" element={<ViewNewRelease />} />
         </Route>
         <Route path="/adminmenu" element={<AdminMenu />} />
         <Route path="/read_grow" element={<ReadAndGrow />} />
