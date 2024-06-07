@@ -25,6 +25,7 @@ const CreateProduct = () => {
   const [photo, setPhoto] = useState("");
   const [frontphoto, setFrontPhoto] = useState("");
   const [backphoto, setBackPhoto] = useState("");
+  const [uid, setUid] = useState("");
 
   //get all cat
   const getAllCategory = async () => {
@@ -51,9 +52,19 @@ const CreateProduct = () => {
       toast.error("Something went wrong in getting subject");
     }
   };
+
+  const getNewUid = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/product/new-uid");
+      setUid(data?.uid);
+    } catch (error) {
+      toast.error("Something went wrong in getting UID");
+    }
+  };
   useEffect(() => {
     getAllCategory();
     getAllSubjects();
+    getNewUid();
   }, []);
 
   //create product
@@ -100,7 +111,17 @@ const CreateProduct = () => {
           </div>
           <div className="col-md-9">
             <h1 className="d-flex justify-content-center">Create Product</h1>
+
             <div className="m-1 w-75">
+              <div className="mb-3">
+                <input
+                  type="text"
+                  value={uid}
+                  placeholder="UID"
+                  className="form-control form disabled"
+                  disabled
+                />
+              </div>
               <Select
                 bordered={false}
                 placeholder="Select the category"
