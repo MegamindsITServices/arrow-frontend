@@ -228,6 +228,29 @@
   border: 2px solid #e0731d;
   color: white;
 }
+
+.back-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 5px;
+  left: 3%;
+  background-color: rgba(128, 128, 128, 0.142);
+  color: rgb(58, 57, 57);
+  text-align: center;
+  outline: none;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  font-size: 1rem;
+  padding: 5px;
+}
+
+.back-button:hover {
+  background-color: #e0711d12;
+}
+
 .square-button1 {
   width: 20%; /* Set width to 50% */
 
