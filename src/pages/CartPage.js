@@ -148,6 +148,7 @@ const CartPage = () => {
     // console.log(products_name);
     // console.log(auth.user.address);
     // console.log(quantities);
+    const shippingAddress = `${auth?.user?.address.landmark}, ${auth?.user?.address.locality}, ${auth?.user?.address.city}, ${auth?.user?.address.district}, ${auth?.user?.address.state}, ${auth?.user?.address.pincode}`;
     const orderData = {
       products: productIDs,
       products_name: products_name,
@@ -157,7 +158,7 @@ const CartPage = () => {
       })),
       payment: totalPrice,
       name: auth?.user?.name,
-      address: auth?.user?.address,
+      address: shippingAddress,
       buyer: auth.user.userID,
       status: "Unprocessed",
     };
@@ -367,7 +368,21 @@ const CartPage = () => {
               {auth?.user?.address ? (
                 <div className="mb-3">
                   <h4>Current Address:</h4>
-                  <h5>{auth?.user?.address}</h5>
+                  <h5>{auth?.user?.address?.shippingAddress}</h5>
+                  <div className="d-flex flex-column justify-content-start">
+                    <div className="d-flex justify-content-center flex-wrap m-0">
+                      <span>{auth?.user?.address?.landmark},</span>
+                      <span>{auth?.user?.address?.locality}, </span>
+                    </div>
+                    <div className="d-flex justify-content-center flex-wrap m-0">
+                      <span>{auth?.user?.address?.city}, </span>
+                      <span>{auth?.user?.address?.district}, </span>
+
+                      <span>{auth?.user?.address?.state},</span>
+                    </div>
+
+                    <p>{auth?.user?.address?.pincode}</p>
+                  </div>
                   <button
                     className="Butn"
                     onClick={() => navigate("/dashboard/user/profile")}
