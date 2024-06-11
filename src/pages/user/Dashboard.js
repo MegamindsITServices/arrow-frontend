@@ -37,7 +37,9 @@ const Dashboard = () => {
                   </div>
                   <div className="card-row">
                     <h5 class="admin-name text-dark">
-                      <FaHome /> Address : {auth?.user?.address}
+                      <FaHome /> Address : {auth?.user?.address.city},
+                      {auth?.user?.address.district},{" "}
+                      {auth?.user?.address.state}, {auth?.user?.address.pincode}
                     </h5>
                   </div>
                 </div>
