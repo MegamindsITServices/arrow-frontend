@@ -212,7 +212,8 @@ const AdminDash = () => {
                     </div>
                     <div className="card-row">
                       <h5 className="admin-name">
-                        <FaHome /> Address : {auth?.user?.address}
+                        <FaHome /> Address : {auth?.user?.address.district},{" "}
+                        {auth?.user?.address.state}
                       </h5>
                     </div>
                   </div>
