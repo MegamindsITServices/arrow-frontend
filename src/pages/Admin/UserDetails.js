@@ -79,7 +79,10 @@ const UserDetails = () => {
                         <th scope="row">{index + 1}</th>
                         <td scope="row">{u.name}</td>
                         <td scope="row">{u.email}</td>
-                        <td scope="row">{u.address}</td>
+                        <td scope="row">
+                          {u.address.city}, {u.address.district},
+                          {u.address.state}
+                        </td>
                         <td scope="row">{u.phone}</td>
                         <td>{formatDateTime(u.createdAt)}</td>
                         <td>
