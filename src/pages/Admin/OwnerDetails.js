@@ -108,7 +108,10 @@ const OwnerDetails = () => {
                         <th scope="row">{index + 1}</th>
                         <td scope="row">{o.name}</td>
                         <td scope="row">{o.email}</td>
-                        <td scope="row">{o.address}</td>
+                        <td scope="row">
+                          {o.address.district}, {o.address.district},{" "}
+                          {o.address.state}
+                        </td>
                         <td scope="row">{o.phone}</td>
                         <td>{formatDateTime(o.createdAt)}</td>
                         <td>
