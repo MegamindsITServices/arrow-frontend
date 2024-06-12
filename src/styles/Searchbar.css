@@ -80,6 +80,16 @@
   }
 }
 
+/* For mobiles */
+
+@media (max-width: 768px) {
+  .search-container input {
+    padding: 2px 5px;
+    height: 2rem;
+    border-radius: 1px;
+  }
+}
+
 .suggestions-list {
   list-style-type: none;
   margin: 0;
