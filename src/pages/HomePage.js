@@ -26,6 +26,16 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
   const [getHomeBook, setGetHomeBook] = useState([]);
+
+  
+  const increaseVisitorCount = async () => {
+    await axios.get("/api/visitor-count");
+  };
+
+  useEffect(() => {
+    increaseVisitorCount();
+  }, []);
+  
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1180 },
