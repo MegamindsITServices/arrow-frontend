@@ -55,6 +55,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import NewReleaseBook from "./pages/Admin/NewReleaseBook";
 import ViewNewRelease from "./pages/Admin/ViewNewRelease";
+import UpdateDealer from "./pages/Admin/UpdateDealer";
 // import OwnerRoute from "./components/Routes/OwnerRoutes";
 // import OwnerDashboard from "./pages/Owners/OwnerDashboard";
 
@@ -108,6 +109,7 @@ function App() {
           <Route path="admin/banner" element={<Banner />} />
           <Route path="admin/view_banner" element={<ViewBanner />} />
           <Route path="admin/banner/:id" element={<UpdateBanner />} />
+          <Route path="admin/update_executive/:id" element={<UpdateDealer />} />
           <Route
             path="admin/create_dealer_state"
             element={<CreateDealerState />}
