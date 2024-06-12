@@ -4,7 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import { Modal } from "antd";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import "../../styles/Viewdealer.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import swal from "sweetalert";
 import { getConfig, axiosInstance } from "../../utils/request";
@@ -75,7 +75,7 @@ const ViewDealers = () => {
               <AdminMenu />
             </div>
             <div className="col-md-9">
-              <div className="col-md-9">
+              <div className="col-md-12">
                 <h1 className="text-center">All Executives</h1>
                 <div className="border shadow">
                   <table className="table">
@@ -111,12 +111,12 @@ const ViewDealers = () => {
                           </td>
                           <td>
                             <button
+                              onClick={() =>
+                                navigate(
+                                  `/dashboard/admin/update_executive/${d._id}`
+                                )
+                              }
                               className="dealer-update-button ms-2"
-                              onClick={() => {
-                                setVisible(true);
-                                setUpdateDealer(d);
-                                setSelectedDealer(d);
-                              }}
                             >
                               Update
                             </button>
@@ -127,7 +127,7 @@ const ViewDealers = () => {
                   </table>
                 </div>
               </div>
-              <Modal
+              {/* <Modal
                 onCancel={() => setVisible(false)}
                 footer={null}
                 visible={visible}
@@ -137,7 +137,7 @@ const ViewDealers = () => {
                   setValue={setUpdateDealer}
                   handleSubmit={handleUpdate}
                 />
-              </Modal>
+              </Modal> */}
             </div>
           </div>
         </div>
