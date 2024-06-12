@@ -6,6 +6,26 @@
   -ms-box-sizing: border-box;
   box-sizing: border-box;
 }
+.visit-counter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  border: 5px solid #d56742;
+  border-radius: 50%;
+  padding: 15px;
+  width: 6rem;
+  height: 6rem;
+}
+
+.visit-counter .visit {
+  font-size: 1.2rem;
+  color: #d56742;
+  font-weight: bold;
+  margin: 0 !important;
+  padding: 0;
+}
 
 #footer {
   background: white;
