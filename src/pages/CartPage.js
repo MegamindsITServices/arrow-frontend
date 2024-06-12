@@ -9,136 +9,68 @@ import swal from "sweetalert";
 import "../styles/cart.css";
 import useRazorpay from "react-razorpay";
 import toast from "react-hot-toast";
+
 const CartPage = () => {
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
   const navigate = useNavigate();
-  const [clientToken, setClientToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [Razorpay] = useRazorpay();
   const [quantities, setQuantities] = useState({});
-  // add quantity
-  // Initialize quantities state with the current quantities in cart
-  // useEffect(() => {
-  //   const initialQuantities = {};
-  //   cart.forEach((item) => {
-  //     initialQuantities[item._id] = 1; // Initial quantity for each item is 1
-  //   });
-  //   setQuantities(initialQuantities);
-  // }, [cart]);
 
   useEffect(() => {
     const savedQuantities =
       JSON.parse(localStorage.getItem("cartQuantities")) || {};
     setQuantities(savedQuantities);
-  }, []);
+  }, [cart]);
+
   // Function to handle increasing quantity
   const increaseQuantity = (productId) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: prevQuantities[productId] + 1,
-    }));
+    setQuantities((prevQuantities) => {
+      const newQuantities = { ...prevQuantities };
+      newQuantities[productId] = (newQuantities[productId] || 1) + 1;
+      return newQuantities;
+    });
   };
 
   // Function to handle decreasing quantity
   const decreaseQuantity = (productId) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: Math.max(1, prevQuantities[productId] - 1),
-    }));
+    setQuantities((prevQuantities) => {
+      const newQuantities = { ...prevQuantities };
+      newQuantities[productId] = Math.max(
+        1,
+        (newQuantities[productId] || 1) - 1
+      );
+      return newQuantities;
+    });
   };
-  //total price
+
   // Function to calculate total price based on quantities
   const totalPrice = () => {
     let total = 0;
     cart.forEach((item) => {
       total += item.price * (quantities[item._id] || 1);
     });
-    // // Check if the total has a decimal part
-    // const hasDecimals = total % 1 !== 0;
-    // // If there are decimals, calculate and append them
-    // const decimals = hasDecimals
-    //   ? Math.ceil((total - Math.floor(total)) * 100)
-    //   : 0;
-    // // Return the total with appended decimals
-    // return `${Math.floor(total)}.${decimals.toLocaleString("en-IN", {
-    //   minimumIntegerDigits: 2,
-    // })}`;
-    // Ensure the total has exactly two decimal places
-    const formattedTotal = total.toFixed(2);
-
-    // Split the total into integer and decimal parts
-    const [integerPart, decimalPart] = formattedTotal.split(".");
-
-    // Return the total with two decimal places
-    return `${integerPart}.${decimalPart}`;
+    return total.toFixed(2);
   };
-  useEffect(() => {
-    const savedQuantities = JSON.parse(localStorage.getItem("cartQuantities"));
-    if (savedQuantities) {
-      console.log("Saved quantities:", savedQuantities); // Log the saved quantities
-      setQuantities(savedQuantities);
-    } else {
-      // If no quantities are saved in localStorage, initialize with default values
-      console.log("Quantity Changed");
 
-      const initialQuantities = {};
-      cart.forEach((item) => {
-        if (!initialQuantities[item._id]) {
-          initialQuantities[item._id] = 1; // Initial quantity for each item is 1
-        }
-      });
-      setQuantities(initialQuantities);
-      localStorage.setItem("cartQuantities", JSON.stringify(initialQuantities));
-    }
-  }, []);
-  // Update localStorage whenever quantities change
   useEffect(() => {
     localStorage.setItem("cartQuantities", JSON.stringify(quantities));
   }, [quantities]);
-  // remove item
-  const removeCartItem1 = (pid) => {
-    try {
-      let myCart = [...cart];
-      let index = myCart.findIndex((item) => item._id === pid);
-      myCart.splice(index, 1);
-      setCart(myCart);
-      localStorage.setItem("cart", JSON.stringify(myCart));
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
+  // remove item
   const removeCartItem = async (pid) => {
     try {
-      console.log(cart);
       const { data } = await axios.post("/api/v1/product/cart/remove-item", {
         userID: auth?.user.userID,
         productID: pid,
       });
-
-      console.log(data.cart);
       setCart(data.cart);
       localStorage.setItem("cart", JSON.stringify(data.cart));
-      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
-
-  //get payment gateway token
-  // const getToken = async () => {
-  //   try {
-  //     const { data } = await axios.get("/api/v1/product/braintree/token");
-  //     setClientToken(data?.clientToken);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getToken();
-  // }, [auth?.token]);
 
   const placeOrder = async () => {
     let totalPrice = 0;
@@ -151,13 +83,7 @@ const CartPage = () => {
       products_name.push(item.name);
       quantityData[item._id] = quantities[item._id];
     });
-    // console.log(auth.user.name);
-    // console.log(auth.user.userID);
-    // console.log(productIDs);
-    // console.log(totalPrice);
-    // console.log(products_name);
-    // console.log(auth.user.address);
-    // console.log(quantities);
+
     const shippingAddress = `${auth?.user?.address.landmark}, ${auth?.user?.address.locality}, ${auth?.user?.address.city}, ${auth?.user?.address.district}, ${auth?.user?.address.state}, ${auth?.user?.address.pincode}`;
     const orderData = {
       products: productIDs,
@@ -172,69 +98,43 @@ const CartPage = () => {
       buyer: auth.user.userID,
       status: "Unprocessed",
     };
-    console.log(orderData);
 
-    const res = await axios
-      .post("/api/v1/order/create-order", orderData)
-      .then((response) => {
-        console.log("Order saved successfully:", response.data);
-        // Handle success
-      })
-      .catch((error) => {
-        console.error("Error saving order:", error);
-        // Handle error
-      });
+    try {
+      const response = await axios.post(
+        "/api/v1/order/create-order",
+        orderData
+      );
+      console.log("Order saved successfully:", response.data);
+      // Handle success
+    } catch (error) {
+      console.error("Error saving order:", error);
+      // Handle error
+    }
   };
 
   // handle payments
   const handlePayment = async () => {
     try {
-      // placeOrder();
-      const cartLen = cart.length;
-      if (cartLen < 1) {
+      if (cart.length < 1) {
         return toast.error("Cart is empty");
       }
-      let productName = "";
-      let productImage =
-        "https://arrowpublicationsindia.com/wp-content/uploads/2019/12/logo-new.png";
-      let productDescription = "";
-      let productPrice = 0;
       let totalQuantity = 0;
+      let productPrice = 0;
 
       cart.forEach((item) => {
         totalQuantity += quantities[item._id];
         productPrice += item.price * quantities[item._id];
       });
       const totalAmountInPaise = Math.max(productPrice * 100, 100);
-      // if (cartLen > 0 && cartLen === 1) {
-      //   const data = cart[0];
-      //   productName = data.name;
-      //   productDescription = data.description;
-      //   productPrice = data.price;
-      // }
-      // Set product details
-      if (cartLen === 1) {
-        const data = cart[0];
-        productName = data.name;
-        productDescription = data.description;
-      }
-      // if (cartLen > 0 && cartLen !== 1) {
-      //   productName = "";
-      //   productDescription = "";
-      //   let totalPrice = 0;
-      //   cart.forEach((item) => {
-      //     totalPrice += item.price;
-      //     productPrice = totalPrice;
-      //   });
-      // }
-      // placeOrder();
+
       var options = {
         key: "rzp_live_LJWUAjysqEQ62P",
         amount: totalAmountInPaise,
         currency: "INR",
-        name: productName,
-        description: productDescription.slice(0, 100),
-        image: productImage,
+        name: "Your Shop",
+        description: "Product Description",
+        image:
+          "https://arrowpublicationsindia.com/wp-content/uploads/2019/12/logo-new.png",
         handler: function (response) {
           console.log("Payment success: Order Placed", response);
           placeOrder();
@@ -312,10 +212,10 @@ const CartPage = () => {
                               viewBox="0 0 24 24"
                               fill="none"
                               stroke="#090101"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              class="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-minus"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-minus"
                             >
                               <path
                                 stroke="none"
@@ -326,7 +226,7 @@ const CartPage = () => {
                             </svg>
                           </button>
                           <span className="quantity">
-                            <strong>{quantities[p._id]}</strong>
+                            <strong>{quantities[p._id] || 1}</strong>
                           </span>
                           <button
                             className="quantity-btn"
@@ -339,10 +239,10 @@ const CartPage = () => {
                               viewBox="0 0 24 24"
                               fill="none"
                               stroke="#090101"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              class="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-plus"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="icon-plus-minus icon-tabler icons-tabler-outline icon-tabler-plus"
                             >
                               <path
                                 stroke="none"
@@ -374,7 +274,7 @@ const CartPage = () => {
               <h2>Cart summary</h2>
               <p>Total | Checkout | Payment</p>
               <hr />
-              <h4 className="text-dark">Total: {totalPrice()}</h4>
+              <h4 className="text-dark">Total: ₹{totalPrice()}</h4>
               {auth?.user?.address ? (
                 <div className="mb-3">
                   <h4>Current Address:</h4>
@@ -387,10 +287,8 @@ const CartPage = () => {
                     <div className="d-flex justify-content-center flex-wrap m-0">
                       <span>{auth?.user?.address?.city}, </span>
                       <span>{auth?.user?.address?.district}, </span>
-
                       <span>{auth?.user?.address?.state},</span>
                     </div>
-
                     <p>{auth?.user?.address?.pincode}</p>
                   </div>
                   <button
@@ -432,4 +330,5 @@ const CartPage = () => {
     </Layout>
   );
 };
+
 export default CartPage;
