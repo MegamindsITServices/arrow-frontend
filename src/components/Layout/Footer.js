@@ -22,6 +22,7 @@ const Footer = () => {
   useEffect(() => {
     getVisitors();
   }, []);
+
   return (
     <>
       <div className="font">
@@ -92,7 +93,10 @@ const Footer = () => {
                 </div>
               </div>
               <div className="col-md-3">
-                <h4>Total Visitors: {visitors}</h4>
+                <div className="visit-counter">
+                  <p className="visit">{visitors}</p>
+                  <p>Visitors</p>
+                </div>
               </div>
             </div>
           </div>
