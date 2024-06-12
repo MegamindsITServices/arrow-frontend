@@ -51,7 +51,7 @@ const Login = () => {
   };
   return (
     <Layout title="Sign in - Arrow">
-      <div className="form-container " style={{ minHeight: "90vh" }}>
+      <div className="form-container-login " style={{ minHeight: "90vh" }}>
         <form onSubmit={handleSubmit}>
           {/* <h4 className="title">Sign in to Arrow !</h4> */}
 
