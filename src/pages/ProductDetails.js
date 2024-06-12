@@ -23,6 +23,7 @@ const ProductDetails = () => {
   const [cart, setCart] = useCart();
   const [auth, setAuth] = useAuth();
   const [showCarousel, setShowCarousel] = useState(false);
+  const [quantities, setQuantities] = useState({});
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
@@ -99,6 +100,46 @@ const ProductDetails = () => {
     }
   };
 
+  // const addItemCart = async (product) => {
+  //   try {
+  //     // Make POST request to add item to cart
+  //     const { data } = await axios.post("/api/v1/product/cart/add-item", {
+  //       userID: auth?.user.userID,
+  //       productID: product._id,
+  //       role: auth?.user?.role,
+  //     });
+
+  //     // Update cart state and localStorage with new item
+  //     const updatedCart = [...cart, data.cart[0]];
+  //     setCart(updatedCart);
+  //     localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+  //     // Show success message
+  //     swal("Success", "Your item has been added to the cart!", "success");
+  //   } catch (error) {
+  //     swal("Error", "Failed to add item to cart. Please Login.", "error");
+  //   }
+  // };
+
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem("cart"));
+    const savedQuantities = JSON.parse(localStorage.getItem("cartQuantities"));
+    if (savedCart) {
+      setCart(savedCart);
+    }
+    if (savedQuantities) {
+      setQuantities(savedQuantities);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  useEffect(() => {
+    localStorage.setItem("cartQuantities", JSON.stringify(quantities));
+  }, [quantities]);
+
   const addItemCart = async (product) => {
     try {
       // Make POST request to add item to cart
@@ -108,10 +149,45 @@ const ProductDetails = () => {
         role: auth?.user?.role,
       });
 
-      // Update cart state and localStorage with new item
-      const updatedCart = [...cart, data.cart[0]];
-      setCart(updatedCart);
+      // Retrieve cart and quantities from localStorage
+      const cartFromLocalStorage =
+        JSON.parse(localStorage.getItem("cart")) || [];
+      const quantitiesFromLocalStorage =
+        JSON.parse(localStorage.getItem("cartQuantities")) || {};
+
+      const existingProductIndex = cartFromLocalStorage.findIndex(
+        (item) => item._id === product._id
+      );
+
+      let updatedCart;
+      if (existingProductIndex !== -1) {
+        // If the product exists, update the quantity in localStorage
+        quantitiesFromLocalStorage[product._id] =
+          (quantitiesFromLocalStorage[product._id] || 0) + 1;
+        updatedCart = [
+          ...cartFromLocalStorage.slice(0, existingProductIndex),
+          {
+            ...cartFromLocalStorage[existingProductIndex],
+            quantity: quantitiesFromLocalStorage[product._id],
+          },
+          ...cartFromLocalStorage.slice(existingProductIndex + 1),
+        ];
+      } else {
+        // If the product doesn't exist, add it to the cart with quantity 1
+        quantitiesFromLocalStorage[product._id] = 1;
+        updatedCart = [...cartFromLocalStorage, { ...product, quantity: 1 }];
+      }
+
+      // Update the cart and quantities in localStorage
       localStorage.setItem("cart", JSON.stringify(updatedCart));
+      localStorage.setItem(
+        "cartQuantities",
+        JSON.stringify(quantitiesFromLocalStorage)
+      );
+
+      // Update the cart and quantities state
+      setCart(updatedCart);
+      setQuantities(quantitiesFromLocalStorage);
 
       // Show success message
       swal("Success", "Your item has been added to the cart!", "success");
