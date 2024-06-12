@@ -48,14 +48,14 @@ const ArrowActivity = () => {
           <div class="row">
             {allPosts.map((post, index) => (
               <>
-                <div class="col-lg-6" key={index}>
+                <div class="col-lg-8" key={index}>
                   <div class="content-info">
                     <h4>{post.title}</h4>
                     <p className="date">{post.addresswithdate}</p>
                     <p className="content">{post.content}</p>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                   <div class="carousel-container-arrow">
                     <Carousel>
                       <Carousel.Item>
