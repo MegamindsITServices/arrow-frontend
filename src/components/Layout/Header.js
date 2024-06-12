@@ -106,42 +106,24 @@ const Header = () => {
       </div>
       <div className="mobile">
         <div class="header">
-          <div class="phone-mail">
+          {/* <div class="phone-mail">
             <h6 class="header-phone">
               <FaPhoneAlt /> +91-9100999026
             </h6>
             <h6 class="header-mail">
               <IoMailSharp /> <span>mail@arrowpublicationsindia.com</span>
             </h6>
-          </div>
+          </div> */}
           <div class="action-buttons">
             <div class="search-container">
               <SearchInput />
             </div>
-            <NavLink
-             onClick={handleCartClick}
-              className="cart-wrapper"
-            >
+            <NavLink onClick={handleCartClick} className="cart-wrapper">
               <Badge count={cart?.length} class="ms-3 ">
                 <BsCart4 class="cart-button" />
               </Badge>
             </NavLink>
-            {!ok && (
-              <>
-                <NavLink to="/signup">
-                  <button class="header-signup">
-                    <FaRegPenToSquare class="icon" />
-                    Register
-                  </button>
-                </NavLink>
-                <NavLink to="/login">
-                  <button class="header-login">
-                    <IoIosLock class="icon" />
-                    Login
-                  </button>
-                </NavLink>
-              </>
-            )}
+            {!ok && <></>}
           </div>
         </div>
       </div>
@@ -290,7 +272,24 @@ const Header = () => {
               </li>
               <div className="dari-drop">|</div>
               {!auth?.user ? (
-                <></>
+                <div className="mobile d-md-none d-flex gap-2">
+                  <li className="nav-item ">
+                    <NavLink to="/signup">
+                      <button class="header-signup w-100 p-1 px-3">
+                        <FaRegPenToSquare class="icon" />
+                        Register
+                      </button>
+                    </NavLink>
+                  </li>
+                  <li className="nav-item ">
+                    <NavLink to="/login">
+                      <button class="header-login w-100 p-1 px-3">
+                        <IoIosLock class="icon" />
+                        Login
+                      </button>
+                    </NavLink>
+                  </li>
+                </div>
               ) : (
                 <>
                   <li className="nav-item dropdown">
