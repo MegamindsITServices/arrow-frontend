@@ -18,33 +18,9 @@ const CreateDealer = () => {
   const [email, setEmail] = useState("");
   const [photo, setPhoto] = useState("");
   const [states, setStates] = useState([]);
-
+  const [area, setArea] = useState("");
+  const [designation, setDesignation] = useState("");
   const [state, setState] = useState("");
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await getConfig();
-  //     const res = await axiosInstance.post("/api/v1/dealer/create-dealer", {
-  //       dealername,
-  //       state,
-  //       personname,
-  //       address,
-  //       phone,
-  //       email,
-  //       photo,
-  //     });
-  //     if (res.data && res.data.success) {
-  //       toast.success(res.data.message);
-  //       navigate("/dashboard/admin/view_dealers");
-  //     } else {
-  //       toast.error(res.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Something went wrong");
-  //   }
-  // };
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -56,6 +32,9 @@ const CreateDealer = () => {
       formData.append("address", address);
       formData.append("phone", phone);
       formData.append("email", email);
+      formData.append("designation", designation);
+
+      formData.append("area", area);
       formData.append("photo", photo);
 
       const { data } = await axios.post(
@@ -108,9 +87,9 @@ const CreateDealer = () => {
     try {
       const response = await axios.get("/api/v1/dealerstate/get-state");
       const data = response.data;
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
       if (data && data.success) {
-        console.log("Setting states:", data.dealerState);
+        // console.log("Setting states:", data.dealerState);
         setStates(data.dealerState);
       }
     } catch (error) {
@@ -210,6 +189,36 @@ const CreateDealer = () => {
                   <div className="mb-3">
                     <input
                       type="text"
+                      value={designation}
+                      onChange={(e) => setDesignation(e.target.value)}
+                      placeholder="Enter Designation"
+                      className="form-control admin-form"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      className="form-control admin-form"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Enter Phone Number"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      className="form-control admin-form"
+                      value={area}
+                      onChange={(e) => setArea(e.target.value)}
+                      placeholder="Enter area"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      type="text"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       className="form-control admin-form"
@@ -218,16 +227,6 @@ const CreateDealer = () => {
                     />
                   </div>
 
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      className="form-control admin-form"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="Phone Number"
-                      required
-                    />
-                  </div>
                   <button type="submit" className="login-button">
                     Submit
                   </button>
