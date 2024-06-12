@@ -19,13 +19,19 @@ const CartPage = () => {
   const [quantities, setQuantities] = useState({});
   // add quantity
   // Initialize quantities state with the current quantities in cart
+  // useEffect(() => {
+  //   const initialQuantities = {};
+  //   cart.forEach((item) => {
+  //     initialQuantities[item._id] = 1; // Initial quantity for each item is 1
+  //   });
+  //   setQuantities(initialQuantities);
+  // }, [cart]);
+
   useEffect(() => {
-    const initialQuantities = {};
-    cart.forEach((item) => {
-      initialQuantities[item._id] = 1; // Initial quantity for each item is 1
-    });
-    setQuantities(initialQuantities);
-  }, [cart]);
+    const savedQuantities =
+      JSON.parse(localStorage.getItem("cartQuantities")) || {};
+    setQuantities(savedQuantities);
+  }, []);
   // Function to handle increasing quantity
   const increaseQuantity = (productId) => {
     setQuantities((prevQuantities) => ({
@@ -74,9 +80,13 @@ const CartPage = () => {
       setQuantities(savedQuantities);
     } else {
       // If no quantities are saved in localStorage, initialize with default values
+      console.log("Quantity Changed");
+
       const initialQuantities = {};
       cart.forEach((item) => {
-        initialQuantities[item._id] = 1; // Initial quantity for each item is 1
+        if (!initialQuantities[item._id]) {
+          initialQuantities[item._id] = 1; // Initial quantity for each item is 1
+        }
       });
       setQuantities(initialQuantities);
       localStorage.setItem("cartQuantities", JSON.stringify(initialQuantities));
