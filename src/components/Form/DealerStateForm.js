@@ -7,7 +7,7 @@ const DealerStateForm = ({ handleSubmit, value, setValue }) => {
         <input
           type="text"
           className="form-control admin-form"
-          placeholder="Dealer State"
+          placeholder="Executive State"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
