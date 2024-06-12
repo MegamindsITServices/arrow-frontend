@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegHandPointRight } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
@@ -9,8 +9,19 @@ import "../../styles/navbar.css";
 import "../../styles/style.css";
 import "../../styles/footer.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Footer = () => {
+  const [visitors, setVisitor] = useState();
+
+  const getVisitors = async () => {
+    const { data } = await axios.get("/api/visitors");
+    setVisitor(data.visitors);
+  };
+
+  useEffect(() => {
+    getVisitors();
+  }, []);
   return (
     <>
       <div className="font">
@@ -54,9 +65,9 @@ const Footer = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/shop">
+                      <Link to="/dealer_network">
                         <i className="fa-solid fa-angles-right" />
-                        Shop By
+                        Dealer Network
                       </Link>
                     </li>
                     <li>
@@ -68,27 +79,7 @@ const Footer = () => {
                   </div>
                 </div>
               </div>
-{/*
-              <div className="col-md-2">
-                <div className="useful-link-shop">
-                  <h2 className="shopby">
-                    <Link to="/Shop">Shop by</Link>
-                  </h2>
 
-                  <div className="use-links">
-                    <li>
-                      <Link to="/shop">
-                        <i className="fa-solid fa-angles-right" /> Class
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/shop">
-                        <i className="fa-solid fa-angles-right" /> Subject
-                      </Link>
-                    </li>
-                  </div>
-                </div>
-              </div>*/}
               <div className="col-md-3">
                 <div className="useful-link">
                   <h2 className="pay-online">Pay Online</h2>
@@ -99,6 +90,9 @@ const Footer = () => {
                     className="pay-online-img"
                   />
                 </div>
+              </div>
+              <div className="col-md-3">
+                <h4>Total Visitors: {visitors}</h4>
               </div>
             </div>
           </div>
