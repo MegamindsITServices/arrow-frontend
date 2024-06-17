@@ -269,7 +269,7 @@ const Register = () => {
               />
             </div> */}
               <ReCAPTCHA
-                sitekey="6LdBiPopAAAAAByRk-w6oHFApDI5t_w7GdRRyfOO"
+                sitekey="6Lc5kvopAAAAAHgpNwhAuCQE4wcqfBd3dZ04mJW-"
                 onChange={onChangeCaptcha}
                 className="mb-4"
               />
