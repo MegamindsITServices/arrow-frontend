@@ -113,34 +113,28 @@ const ViewDealerNetwork = () => {
                         {/* <h5 className="card-desc">
                           {dealer.personname}
                         </h5> */}
-                        <h5 className="card-desc">Email : {dealer.email}</h5>
-                        <h5 className="card-desc">State : {dealer?.address}</h5>
-                        <h5 className="card-desc">Contact : {dealer?.phone}</h5>
-                        {/* <h6 className="card-price">
-                        Price:{" "}
-                        {product.price.toLocaleString("en-IN", {
-                          style: "currency",
-                          currency: "INR",
-                        })}
-                      </h6> */}
+                        {dealer?.state && (
+                          <h5 className="card-desc">Email : {dealer.email}</h5>
+                        )}
+                        {dealer?.phone && (
+                          <h5 className="card-desc">
+                            Contact : {dealer?.phone}
+                          </h5>
+                        )}
+                        {dealer?.designation && (
+                          <h5 className="card-desc">
+                            Designation : {dealer?.designation}
+                          </h5>
+                        )}
+                        {dealer?.area && (
+                          <h5 className="card-desc">Area : {dealer?.area}</h5>
+                        )}
+                        {dealer?.state && (
+                          <h5 className="card-desc">
+                            State : {dealer?.state.state}
+                          </h5>
+                        )}
                       </div>
-
-                      {/* <div className="card-name-price">
-                      <button
-                        className="more-details ms-1"
-                        onClick={() => navigate(`/product/${product.slug}`)}
-                      >
-                        More Details
-                      </button>
-                      <button
-                        className="add-cart-butn ms-1 mb-4"
-                        onClick={() => {
-                          addItemCart(product);
-                        }}
-                      >
-                        ADD TO CART
-                      </button>
-                    </div> */}
                     </div>
                   </div>
                 </div>
