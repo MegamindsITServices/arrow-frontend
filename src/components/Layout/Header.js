@@ -244,8 +244,9 @@ const Header = () => {
               <li>
                 <NavLink
                   activeClassName="active-link"
-                  to="/e_resources"
+                  to="https://eresources.arrowpublications.in"
                   className="nav-link"
+                    target="_blank"
                 >
                   E-resources
                 </NavLink>
